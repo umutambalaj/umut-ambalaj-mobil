@@ -418,10 +418,11 @@ function urunleriListele(){
 function urunSil(i){
     if(confirm("Bu ürün silinsin mi?")){
         urunKayitlari.splice(i, 1);
-        localStorage.setItujem("urunler", JSON.stringify(urunKayitlari));
+        localStorage.setItem("urunler", JSON.stringify(urunKayitlari));
         urunleriListele();
     }
 } 
-</script>
+  </script>
 </body>
 </html>
+
