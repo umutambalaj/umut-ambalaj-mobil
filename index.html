@@ -236,12 +236,17 @@ function siparisleriAc(){
 let urunSecim = document.getElementById("sipUrun");
 urunSecim.innerHTML = '<option value="">Ürün seçin</option>';
 
-let urunler = [...new Set(siparisler.map(s => s.urun))];
+let urunler = urunKayitlari.map(u => u.ad);
 
 urunler.forEach(function(urun){
   urunSecim.innerHTML += '<option value="' + urun + '">' + urun + '</option>';
 });
-
+urunSecim.onchange = function(){
+    let secilen = urunKayitlari.find(u => u.ad === urunSecim.value);
+    if(secilen){
+        document.getElementById("sipFiyat").value = secilen.satis;
+    }
+};
 
     let secim = document.getElementById("sipMusteri");
     secim.innerHTML = '<option value="">Müşteri seçin</option>';
