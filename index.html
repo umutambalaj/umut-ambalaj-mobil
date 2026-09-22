@@ -280,7 +280,7 @@ function sonFiyatiGetir(){
     for(let i = siparisler.length - 1; i >= 0; i--){
         if(
             siparisler[i].musteri === musteri &&
-            siparisler[i].urun.toLowerCase() === urun
+    siparisler[i].urun.trim().toLowerCase() === urun
         ){
             document.getElementById("sipFiyat").value = siparisler[i].fiyat;
             return;
