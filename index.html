@@ -152,16 +152,28 @@ function musteriKaydet(){
 }
 
 function listele(){
-  let alan=document.getElementById("liste");
-  alan.innerHTML="";
+    let alan = document.getElementById("liste");
+    alan.innerHTML = "";
 
-  musteriler.forEach(function(m){
-    alan.innerHTML +=
-      
-        '<div class="musteri"><b>'+m.ad+'</b><br>'+m.bolge+'<br>'+m.telefon+'<br>'+m.adres+'</div>';
+    musteriler.forEach(function(m, index){
+        alan.innerHTML +=
+        '<div class="musteri">' +
+        '<b>' + m.ad + '</b><br>' +
+        m.bolge + '<br>' +
+        m.telefon + '<br>' +
+        m.adres + '<br>' +
+        '<button onclick="musteriSil(' + index + ')">🗑️ Müşteriyi Sil</button>' +
+        '</div>';
     });
 }
 
+function musteriSil(index){
+    if(confirm("Bu müşteriyi silmek istiyor musunuz?")){
+        musteriler.splice(index, 1);
+        localStorage.setItem("musteriler", JSON.stringify(musteriler));
+        listele();
+    }
+}
 listele();
 
 </script>
