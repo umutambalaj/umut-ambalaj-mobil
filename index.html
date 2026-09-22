@@ -107,7 +107,34 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 
 </div>
 </div>
+<div id="siparisler" class="hidden">
 
+  <button onclick="anaSayfa()">← Ana Sayfa</button>
+
+  <div class="card">
+    <h2>📦 Yeni Sipariş</h2>
+
+    <select id="sipMusteri">
+      <option value="">Müşteri seçin</option>
+    </select>
+
+    <input id="sipUrun" placeholder="Ürün adı">
+
+    <input id="sipMiktar" type="number" placeholder="Miktar">
+
+    <input id="sipFiyat" type="number" step="0.01" placeholder="Birim fiyat ₺">
+
+    <input id="sipTarih" type="date">
+
+    <button onclick="siparisKaydet()">💾 Siparişi Kaydet</button>
+  </div>
+
+  <div class="card">
+    <h2>📅 İleri Tarihli Siparişler</h2>
+    <div id="siparisListesi"></div>
+  </div>
+
+</div>
 <script>
 let musteriler = JSON.parse(localStorage.getItem("musteriler")) || [];
 
@@ -175,9 +202,91 @@ function musteriSil(index){
     }
 }
 listele();
+let siparisler = JSON.parse(localStorage.getItem("siparisler") || "[]");
+
 function siparisleriAc(){
-    alert("Siparişler ekranı açılıyor.");
+    document.getElementById("ana").classList.add("hidden");
+    document.getElementById("musteriler").classList.add("hidden");
+    document.getElementById("siparisler").classList.remove("hidden");
+
+    let secim = document.getElementById("sipMusteri");
+    secim.innerHTML = '<option value="">Müşteri seçin</option>';
+
+    musteriler.forEach(function(m){
+        secim.innerHTML += '<option value="' + m.ad + '">' + m.ad + '</option>';
+    });
+
+    siparisListele();
 }
+
+function siparisKaydet(){
+    let musteri = document.getElementById("sipMusteri").value;
+    let urun = document.getElementById("sipUrun").value.trim();
+    let miktar = document.getElementById("sipMiktar").value;
+    let fiyat = document.getElementById("sipFiyat").value;
+    let tarih = document.getElementById("sipTarih").value;
+
+    if(musteri==="" || urun==="" || tarih===""){
+        alert("Müşteri, ürün ve tarih zorunludur.");
+        return;
+    }
+
+    siparisler.push({
+        musteri:musteri,
+        urun:urun,
+        miktar:miktar,
+        fiyat:fiyat,
+        tarih:tarih
+    });
+
+    localStorage.setItem("siparisler", JSON.stringify(siparisler));
+
+    document.getElementById("sipUrun").value="";
+    document.getElementById("sipMiktar").value="";
+    document.getElementById("sipFiyat").value="";
+    document.getElementById("sipTarih").value="";
+
+    siparisListele();
+    alert("Sipariş kaydedildi.");
+}
+
+function siparisListele(){
+    let alan = document.getElementById("siparisListesi");
+    alan.innerHTML = "";
+
+    let sirali = siparisler.slice().sort(function(a,b){
+        return a.tarih.localeCompare(b.tarih);
+    });
+
+    sirali.forEach(function(s){
+        alan.innerHTML +=
+            '<div class="musteri">' +
+            '<b>' + s.musteri + '</b><br>' +
+            '📦 ' + s.urun + '<br>' +
+            'Miktar: ' + s.miktar + '<br>' +
+            'Fiyat: ' + s.fiyat + ' ₺<br>' +
+            '📅 ' + s.tarih +
+            '</div>';
+    });
+function sonFiyatiGetir(){
+    let musteri = document.getElementById("sipMusteri").value;
+    let urun = document.getElementById("sipUrun").value.trim().toLowerCase();
+
+    if(musteri === "" || urun === "") return;
+
+    for(let i = siparisler.length - 1; i >= 0; i--){
+        if(
+            siparisler[i].musteri === musteri &&
+            siparisler[i].urun.toLowerCase() === urun
+        ){
+            document.getElementById("sipFiyat").value = siparisler[i].fiyat;
+            return;
+        }
+    }
+}
+
+document.getElementById("sipUrun").addEventListener("change", sonFiyatiGetir);
+document.getElementById("sipMusteri").addEventListener("change", sonFiyatiGetir);
 </script>
 </body>
 </html>
