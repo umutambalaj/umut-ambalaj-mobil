@@ -118,7 +118,8 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
       <option value="">Müşteri seçin</option>
     </select>
 
-    <input id="sipUrun" placeholder="Ürün adı">
+    <input id="sipUrun" list="urunListesi" placeholder="Ürün adı">
+<datalist id="urunListesi"></datalist>
 
     <input id="sipMiktar" type="number" placeholder="Miktar">
 
@@ -210,7 +211,14 @@ function siparisleriAc(){
     document.getElementById("ana").classList.add("hidden");
     document.getElementById("musteriler").classList.add("hidden");
     document.getElementById("siparisler").classList.remove("hidden");
+let urunListesi = document.getElementById("urunListesi");
+urunListesi.innerHTML = "";
 
+let urunler = [...new Set(siparisler.map(s => s.urun))];
+
+urunler.forEach(function(urun){
+    urunListesi.innerHTML += '<option value="' + urun + '"></option>';
+});
     let secim = document.getElementById("sipMusteri");
     secim.innerHTML = '<option value="">Müşteri seçin</option>';
 
