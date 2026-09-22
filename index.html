@@ -68,7 +68,7 @@ input,select,textarea{
 <button onclick="siparisleriAc()">📦 Siparişler</button>
 <button onclick="urunleriAc()">📦 Ürünler</button>  
 <button>💰 Cari / Tahsilat</button>
-<button>📊 Ciro ve Kâr</button>
+<button onclick="ciroKarAc()">📊 Ciro ve Kâr</button>
 
 <div class="card">
 Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocaklar
@@ -91,6 +91,19 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
   <div class="card">
     <h2>📋 Ürün Listesi</h2>
     <div id="urunKayitListesi"></div>
+  </div>
+
+</div>
+  <div id="ciroKar" class="hidden">
+
+  <button onclick="anaSayfa()">← Ana Sayfa</button>
+
+  <div class="card">
+    <h2>📊 Ciro ve Kâr</h2>
+
+    <div id="ciroToplam">Toplam Ciro: 0 ₺</div>
+    <div id="maliyetToplam">Toplam Maliyet: 0 ₺</div>
+    <div id="karToplam">Toplam Kâr: 0 ₺</div>
   </div>
 
 </div>
@@ -171,8 +184,31 @@ function anaSayfa(){
     document.getElementById("siparisler").classList.add("hidden");
   document.getElementById("urunler").classList.add("hidden");
     document.getElementById("ana").classList.remove("hidden");
+document.getElementById("ciroKar").classList.add("hidden");
 }
+function ciroKarAc(){
+    document.getElementById("ana").classList.add("hidden");
+    document.getElementById("musteriler").classList.add("hidden");
+    document.getElementById("siparisler").classList.add("hidden");
+    document.getElementById("urunler").classList.add("hidden");
+    document.getElementById("ciroKar").classList.remove("hidden");
+let toplamCiro = 0;
+let toplamMaliyet = 0;
 
+siparisler.forEach(function(s){
+    let miktar = Number(s.miktar) || 0;
+    let fiyat = Number(s.fiyat) || 0;
+    let maliyet = Number(s.maliyet) || 0;
+
+    toplamCiro += miktar * fiyat;
+    toplamMaliyet += miktar * maliyet;
+});
+
+let toplamKar = toplamCiro - toplamMaliyet;
+
+document.getElementById("ciroToplam").innerText = "Toplam Ciro: " + toplamCiro.toFixed(2) + " ₺";
+document.getElementById("maliyetToplam").innerText = "Toplam Maliyet: " + toplamMaliyet.toFixed(2) + " ₺";
+document.getElementById("karToplam").innerText = "Toplam Kâr: " + toplamKar.toFixed(2) + " ₺";}
 
 function musteriKaydet(){
   let ad=document.getElementById("ad").value.trim();
@@ -382,7 +418,7 @@ function urunleriListele(){
 function urunSil(i){
     if(confirm("Bu ürün silinsin mi?")){
         urunKayitlari.splice(i, 1);
-        localStorage.setItem("urunler", JSON.stringify(urunKayitlari));
+        localStorage.setItujem("urunler", JSON.stringify(urunKayitlari));
         urunleriListele();
     }
 } 
