@@ -264,7 +264,8 @@ function siparisKaydet(){
     let miktar = document.getElementById("sipMiktar").value;
     let fiyat = document.getElementById("sipFiyat").value;
     let tarih = document.getElementById("sipTarih").value;
-
+let secilenUrun = urunKayitlari.find(u => u.ad === urun);
+let maliyet = secilenUrun ? secilenUrun.maliyet : 0;
     if(musteri==="" || urun==="" || tarih===""){
         alert("Müşteri, ürün ve tarih zorunludur.");
         return;
@@ -275,6 +276,7 @@ function siparisKaydet(){
         urun:urun,
         miktar:miktar,
         fiyat:fiyat,
+      maliyet:maliyet,
         tarih:tarih
     });
 
