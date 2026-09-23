@@ -649,40 +649,72 @@ function sipariseUrunEkle(){
 }
 function siparisListele(){
 
-var alan = document.getElementById("siparisListesi");
+    var alan = document.getElementById("siparisListesi");
+    alan.innerHTML = "";
 
-alan.innerHTML = "";
+    var gruplar = {};
 
-siparisler.forEach(function(s){
+    siparisler.forEach(function(s){
 
-var toplam =
+        var anahtar = s.musteri + "||" + s.tarih;
 
-(Number(s.miktar) || 0) *
+        if(!gruplar[anahtar]){
+            gruplar[anahtar] = {
+                musteri: s.musteri,
+                tarih: s.tarih,
+                urunler: []
+            };
+        }
 
-(Number(s.fiyat) || 0);
+        gruplar[anahtar].urunler.push(s);
+    });
 
-alan.innerHTML +=
+    Object.keys(gruplar).forEach(function(anahtar){
 
-'<div class="musteri">'+
+        var grup = gruplar[anahtar];
+        var toplam = 0;
 
-'<b>'+s.musteri+'</b><br>'+
+        var html =
+            '<div class="musteri">' +
+            '<b>' + grup.musteri + '</b><br>';
 
-'📦 '+s.urun+'<br>'+
+        grup.urunler.forEach(function(s){
 
-'Miktar: '+s.miktar+'<br>'+
+            var tutar =
+                (Number(s.miktar) || 0) *
+                (Number(s.fiyat) || 0);
 
-'Birim Fiyat: '+Number(s.fiyat).toFixed(2)+' ₺<br>'+
+            toplam += tutar;
 
-'Toplam: <b>'+toplam.toFixed(2)+' ₺</b><br>'+
+            html +=
+                '📦 ' + s.urun + '<br>' +
+                'Miktar: ' + s.miktar + '<br>' +
+                'Birim Fiyat: ' + Number(s.fiyat).toFixed(2) + ' ₺<br>' +
+                'Toplam: <b>' + tutar.toFixed(2) + ' ₺</b><br><br>';
+        });
 
-'📅 '+s.tarih+
+        html +=
+            '<b>Sipariş Toplamı: ' + toplam.toFixed(2) + ' ₺</b><br>' +
+            '📅 ' + grup.tarih +
+            '<br><button onclick="siparisSil(\''+grup.musteri+'\',\''+grup.tarih+'\')">🗑️ Siparişi Sil</button>' +
+            '</div>';
 
-'</div>';
+        alan.innerHTML += html;
+    });
+function siparisSil(musteri,tarih){
 
-});
+    if(!confirm("Bu sipariş silinsin mi?")){
+        return;
+    }
 
+    siparisler = siparisler.filter(function(s){
+        return !(s.musteri === musteri && s.tarih === tarih);
+    });
+
+    localStorage.setItem("siparisler",JSON.stringify(siparisler));
+
+    siparisListele();
 }
-
 
 /* BAKİYE */
 
