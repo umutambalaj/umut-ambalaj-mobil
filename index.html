@@ -14,6 +14,11 @@ button{width:100%;padding:15px;margin:6px 0;border:0;border-radius:8px;backgroun
 input,select,textarea{width:100%;padding:12px;margin:6px 0;box-sizing:border-box;font-size:16px}
 .hidden{display:none}
 .musteri{border-bottom:1px solid #ddd;padding:10px 0}
+.bolgeKart{background:white;margin-top:18px;border-radius:12px;overflow:hidden}
+.bolgeBaslik{background:#1565c0;color:white;padding:16px;font-size:22px;font-weight:bold}
+.bolgeIcerik{padding:15px}
+.bolgeToplam{font-size:18px;font-weight:bold;padding-top:12px}
+.ozet{font-size:18px;line-height:1.7}
 </style>
 </head>
 
@@ -27,7 +32,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;box-sizing:border-box
 <div class="container">
 
 <div id="ana">
-<button onclick="yarinTeslimAc()">🚚 Yarın Teslim Edilecekler</button>
+<button onclick="teslimEdileceklerAc()">🚚 Teslim Edilecekler</button>
 <button onclick="musterileriAc()">👥 Müşteriler</button>
 <button onclick="siparisleriAc()">📦 Siparişler</button>
 <button onclick="urunleriAc()">📦 Ürünler</button>
@@ -35,6 +40,171 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;box-sizing:border-box
 <button onclick="ciroKarAc()">📊 Ciro ve Kâr</button>
 <button onclick="bolgeBakiyeleriAc()">📍 Bölge Bakiyeleri</button>
 
+<div class="card">
+Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocaklar
+</div>
+</div>
+
+<div id="musteriler" class="hidden">
+<button onclick="anaSayfa()">← Ana Sayfa</button>
+
+<div class="card">
+<h2>👥 Yeni Müşteri</h2>
+<input id="ad" placeholder="Müşteri adı">
+
+<select id="bolge">
+<option value="">Bölge seçin</option>
+<option>Bandırma</option>
+<option>Erdek</option>
+<option>Gönen</option>
+<option>Manyas</option>
+<option>Edincik</option>
+<option>Avşa Adası</option>
+<option>Ocaklar</option>
+</select>
+
+<input id="telefon" placeholder="Telefon">
+<textarea id="adres" placeholder="Adres"></textarea>
+<button onclick="musteriKaydet()">💾 Müşteriyi Kaydet</button>
+</div>
+
+<div class="card">
+<h2>Müşteri Listesi</h2>
+<div id="liste"></div>
+</div>
+</div>
+
+<div id="urunler" class="hidden">
+<button onclick="anaSayfa()">← Ana Sayfa</button>
+
+<div class="card">
+<h2>📦 Yeni Ürün</h2>
+<input id="urunAd" placeholder="Ürün adı">
+<input id="urunMaliyet" type="number" step="0.01" placeholder="Maliyet ₺">
+<input id="urunSatis" type="number" step="0.01" placeholder="Satış ₺">
+<button onclick="urunKaydet()">💾 Ürünü Kaydet</button>
+</div>
+
+<div id="urunKayitListesi"></div>
+</div>
+
+<div id="siparisler" class="hidden">
+<button onclick="anaSayfa()">← Ana Sayfa</button>
+
+<div class="card">
+<h2>📦 Yeni Sipariş</h2>
+
+<select id="sipMusteri">
+<option value="">Müşteri seçin</option>
+</select>
+
+<select id="sipUrun">
+<option value="">Ürün seçin</option>
+</select>
+
+<input id="sipMiktar" type="number" placeholder="Miktar">
+<input id="sipFiyat" type="number" step="0.01" placeholder="Birim fiyat ₺">
+<input id="sipTarih" type="date">
+
+<button onclick="siparisKaydet()">💾 Siparişi Kaydet</button>
+</div>
+
+<div class="card">
+<h2>📅 Siparişler</h2>
+<div id="siparisListesi"></div>
+</div>
+</div>
+
+<div id="cari" class="hidden">
+<button onclick="anaSayfa()">← Ana Sayfa</button>
+
+<div class="card">
+<h2>💰 Cari / Tahsilat</h2>
+
+<select id="cariMusteri" onchange="cariGoster()">
+<option value="">Müşteri seçin</option>
+</select>
+
+<div id="cariBilgi">Müşteri seçin.</div>
+</div>
+
+<div class="card">
+<h2>💵 Tahsilat Gir</h2>
+<input id="tahsilatTutar" type="number" step="0.01" placeholder="Tahsilat tutarı ₺">
+<input id="tahsilatTarih" type="date">
+<button onclick="tahsilatKaydet()">💾 Tahsilatı Kaydet</button>
+</div>
+
+<div class="card">
+<h2>📋 Tahsilat Geçmişi</h2>
+<div id="tahsilatListesi"></div>
+</div>
+</div>
+
+<div id="ciroKar" class="hidden">
+<button onclick="anaSayfa()">← Ana Sayfa</button>
+
+<div class="card">
+<h2>📊 Ciro ve Kâr</h2>
+<div id="ciroToplam"></div>
+<div id="maliyetToplam"></div>
+<div id="karToplam"></div>
+</div>
+</div>
+
+<div id="bolgeBakiyeleri" class="hidden">
+<button onclick="anaSayfa()">← Ana Sayfa</button>
+
+<div class="card">
+<h2>📍 Bölge Bakiyeleri</h2>
+<button onclick="bolgeListele('Bandırma')">Bandırma</button>
+<button onclick="bolgeListele('Erdek')">Erdek</button>
+<button onclick="bolgeListele('Gönen')">Gönen</button>
+<button onclick="bolgeListele('Manyas')">Manyas</button>
+<button onclick="bolgeListele('Edincik')">Edincik</button>
+<button onclick="bolgeListele('Avşa Adası')">Avşa Adası</button>
+<button onclick="bolgeListele('Ocaklar')">Ocaklar</button>
+</div>
+
+<div class="card">
+<h2 id="bolgeBaslik">Bölge seçin</h2>
+<div id="bolgeToplam"></div>
+<div id="bolgeMusteriListesi"></div>
+</div>
+</div>
+
+<div id="teslimEdilecekler" class="hidden">
+<button onclick="anaSayfa()">← Ana Sayfa</button>
+
+<div class="card">
+<h2>🚚 Teslim Edilecekler</h2>
+<div id="teslimOzet" class="ozet"></div>
+</div>
+
+<div id="teslimListe"></div>
+</div>
+
+</div>
+
+<script>
+
+let musteriler=JSON.parse(localStorage.getItem("musteriler"))||[];
+let siparisler=JSON.parse(localStorage.getItem("siparisler"))||[];
+let urunKayitlari=JSON.parse(localStorage.getItem("urunler"))||[];
+let tahsilatlar=JSON.parse(localStorage.getItem("tahsilatlar"))||[];
+
+function gizle(){
+[
+"ana",
+"musteriler",
+"siparisler",
+"urunler",
+"ciroKar",
+"cari",
+"bolgeBakiyeleri",
+"teslimEdilecekler"
+].forEach(function(id){
+document.get
 <div class="card">
 Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocaklar
 </div>
