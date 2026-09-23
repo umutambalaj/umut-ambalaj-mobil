@@ -32,6 +32,9 @@ button{
     color:white;
     font-size:17px;
 }
+.sil{
+    background:#c62828;
+}
 .card{
     background:white;
     padding:15px;
@@ -52,22 +55,6 @@ input,select,textarea{
     border-bottom:1px solid #ddd;
     padding:10px 0;
 }
-.bolge-kart{
-    background:white;
-    margin-top:15px;
-    border-radius:12px;
-    overflow:hidden;
-}
-.bolge-baslik{
-    background:#1565c0;
-    color:white;
-    padding:15px;
-    font-size:21px;
-    font-weight:bold;
-}
-.bolge-icerik{
-    padding:15px;
-}
 </style>
 </head>
 
@@ -81,35 +68,62 @@ input,select,textarea{
 <div class="container">
 
 <!-- ANA SAYFA -->
+
 <div id="ana">
 
-<button onclick="tumTeslimatlarAc()">🚚 Teslim Edilecekler</button>
-<button onclick="siparisleriAc()">📦 Siparişler</button>
-<button onclick="urunleriAc()">📦 Ürünler</button>
-<button onclick="cariAc()">💰 Cari / Tahsilat</button>
-<button onclick="ciroKarAc()">📊 Ciro ve Kâr</button>
-<button onclick="bolgeBakiyeleriAc()">📍 Bölge Bakiyeleri</button>
+<button onclick="yarinTeslimAc()">
+🚚 Yarın Teslim Edilecekler
+</button>
+
+<button onclick="musterileriAc()">
+👥 Müşteriler
+</button>
+
+<button onclick="siparisleriAc()">
+📦 Siparişler
+</button>
+
+<button onclick="urunleriAc()">
+📦 Ürünler
+</button>
+
+<button onclick="cariAc()">
+💰 Cari / Tahsilat
+</button>
+
+<button onclick="ciroKarAc()">
+📊 Ciro ve Kâr
+</button>
+
+<button onclick="bolgeBakiyeleriAc()">
+📍 Bölge Bakiyeleri
+</button>
 
 <div class="card">
 Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocaklar
 </div>
+
 </div>
 
-<!-- TESLİM EDİLECEKLER -->
-<div id="teslimEdilecekler" class="hidden">
+
+<!-- YARIN TESLİM -->
+
+<div id="yarinTeslim" class="hidden">
 
 <button onclick="anaSayfa()">← Ana Sayfa</button>
 
 <div class="card">
-<h2>🚚 Teslim Edilecekler</h2>
-<div id="teslimOzet"></div>
+<h2>🚚 Yarın Teslim Edilecekler</h2>
+<div id="yarinOzet"></div>
 </div>
 
-<div id="teslimListe"></div>
+<div id="yarinListe"></div>
 
 </div>
+
 
 <!-- MÜŞTERİLER -->
+
 <div id="musteriler" class="hidden">
 
 <button onclick="anaSayfa()">← Ana Sayfa</button>
@@ -135,18 +149,25 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 
 <textarea id="adres" placeholder="Adres"></textarea>
 
-<button onclick="musteriKaydet()">💾 Müşteriyi Kaydet</button>
+<button onclick="musteriKaydet()">
+💾 Müşteriyi Kaydet
+</button>
 
 </div>
 
 <div class="card">
+
 <h2>Müşteri Listesi</h2>
+
 <div id="liste"></div>
+
 </div>
 
 </div>
+
 
 <!-- ÜRÜNLER -->
+
 <div id="urunler" class="hidden">
 
 <button onclick="anaSayfa()">← Ana Sayfa</button>
@@ -161,7 +182,9 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 
 <input id="urunSatis" type="number" step="0.01" placeholder="Satış ₺">
 
-<button onclick="urunKaydet()">💾 Ürünü Kaydet</button>
+<button onclick="urunKaydet()">
+💾 Ürünü Kaydet
+</button>
 
 </div>
 
@@ -169,7 +192,9 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 
 </div>
 
+
 <!-- SİPARİŞLER -->
+
 <div id="siparisler" class="hidden">
 
 <button onclick="anaSayfa()">← Ana Sayfa</button>
@@ -186,14 +211,21 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 <option value="">Ürün seçin</option>
 </select>
 
-<input id="sipMiktar" type="number" placeholder="Miktar">
+<input id="sipMiktar" type="number" step="0.01" placeholder="Miktar">
 
 <input id="sipFiyat" type="number" step="0.01" placeholder="Birim fiyat ₺">
 
+<button onclick="sipariseUrunEkle()">
+➕ Siparişe Ürün Ekle
+</button>
+
+<div id="siparisSepeti"></div>
+
 <input id="sipTarih" type="date">
-<button type="button" onclick="sipariseUrunEkle()">➕ Siparişe Ürün Ekle</button>
-<div id="eklenenUrunler"></div>
-<button onclick="siparisKaydet()">💾 Siparişi Kaydet</button>
+
+<button onclick="siparisKaydet()">
+💾 Siparişi Kaydet
+</button>
 
 </div>
 
@@ -207,7 +239,9 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 
 </div>
 
+
 <!-- CARİ -->
+
 <div id="cari" class="hidden">
 
 <button onclick="anaSayfa()">← Ana Sayfa</button>
@@ -220,7 +254,9 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 <option value="">Müşteri seçin</option>
 </select>
 
-<div id="cariBilgi">Müşteri seçin.</div>
+<div id="cariBilgi">
+Müşteri seçin.
+</div>
 
 </div>
 
@@ -232,7 +268,9 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 
 <input id="tahsilatTarih" type="date">
 
-<button onclick="tahsilatKaydet()">💾 Tahsilatı Kaydet</button>
+<button onclick="tahsilatKaydet()">
+💾 Tahsilatı Kaydet
+</button>
 
 </div>
 
@@ -246,7 +284,9 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 
 </div>
 
+
 <!-- CİRO KÂR -->
+
 <div id="ciroKar" class="hidden">
 
 <button onclick="anaSayfa()">← Ana Sayfa</button>
@@ -265,7 +305,9 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 
 </div>
 
+
 <!-- BÖLGE BAKİYELERİ -->
+
 <div id="bolgeBakiyeleri" class="hidden">
 
 <button onclick="anaSayfa()">← Ana Sayfa</button>
@@ -275,17 +317,11 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 <h2>📍 Bölge Bakiyeleri</h2>
 
 <button onclick="bolgeListele('Bandırma')">Bandırma</button>
-
 <button onclick="bolgeListele('Erdek')">Erdek</button>
-
 <button onclick="bolgeListele('Gönen')">Gönen</button>
-
 <button onclick="bolgeListele('Manyas')">Manyas</button>
-
 <button onclick="bolgeListele('Edincik')">Edincik</button>
-
 <button onclick="bolgeListele('Avşa Adası')">Avşa Adası</button>
-
 <button onclick="bolgeListele('Ocaklar')">Ocaklar</button>
 
 </div>
@@ -304,69 +340,81 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 
 </div>
 
+
 <script>
 
-var musteriler = JSON.parse(localStorage.getItem("musteriler")) || [];
-var siparisler = JSON.parse(localStorage.getItem("siparisler")) || [];
-var urunKayitlari = JSON.parse(localStorage.getItem("urunler")) || [];
-var tahsilatlar = JSON.parse(localStorage.getItem("tahsilatlar")) || [];
+/* VERİLER */
+
+var musteriler =
+JSON.parse(localStorage.getItem("musteriler")) || [];
+
+var siparisler =
+JSON.parse(localStorage.getItem("siparisler")) || [];
+
+var urunKayitlari =
+JSON.parse(localStorage.getItem("urunler")) || [];
+
+var tahsilatlar =
+JSON.parse(localStorage.getItem("tahsilatlar")) || [];
+
+var siparisSepeti = [];
 
 
 /* SAYFALAR */
 
 function gizle(){
 
-var sayfalar = [
+[
 "ana",
-"teslimEdilecekler",
 "musteriler",
 "siparisler",
 "urunler",
-"cari",
 "ciroKar",
-"bolgeBakiyeleri"
-];
+"cari",
+"bolgeBakiyeleri",
+"yarinTeslim"
+].forEach(function(id){
 
-sayfalar.forEach(function(id){
-
-var alan = document.getElementById(id);
-
-if(alan){
-alan.classList.add("hidden");
-}
+document.getElementById(id).classList.add("hidden");
 
 });
 
 }
 
+
 function anaSayfa(){
 
 gizle();
 
-document.getElementById("ana").classList.remove("hidden");
+document.getElementById("ana")
+.classList.remove("hidden");
 
 }
 
 
-/* MÜŞTERİLER */
+/* MÜŞTERİ */
 
 function musterileriAc(){
 
 gizle();
 
-document.getElementById("musteriler").classList.remove("hidden");
+document.getElementById("musteriler")
+.classList.remove("hidden");
 
 listele();
 
 }
 
+
 function musteriKaydet(){
 
-var ad = document.getElementById("ad").value.trim();
+var ad =
+document.getElementById("ad").value.trim();
 
-var bolge = document.getElementById("bolge").value;
+var bolge =
+document.getElementById("bolge").value;
 
-if(ad === "" || bolge === ""){
+if(!ad || !bolge){
 
 alert("Müşteri adı ve bölge zorunludur.");
 
@@ -380,45 +428,58 @@ ad:ad,
 
 bolge:bolge,
 
-telefon:document.getElementById("telefon").value,
+telefon:
+document.getElementById("telefon").value,
 
-adres:document.getElementById("adres").value
+adres:
+document.getElementById("adres").value
 
 });
 
-localStorage.setItem("musteriler",JSON.stringify(musteriler));
+localStorage.setItem(
+"musteriler",
+JSON.stringify(musteriler)
+);
 
-document.getElementById("ad").value = "";
-
-document.getElementById("bolge").value = "";
-
-document.getElementById("telefon").value = "";
-
-document.getElementById("adres").value = "";
+document.getElementById("ad").value="";
+document.getElementById("telefon").value="";
+document.getElementById("adres").value="";
 
 listele();
 
 }
 
+
 function listele(){
 
-var alan = document.getElementById("liste");
+var alan =
+document.getElementById("liste");
 
-alan.innerHTML = "";
+alan.innerHTML="";
+
+if(musteriler.length === 0){
+
+alan.innerHTML="Kayıtlı müşteri yok.";
+
+return;
+
+}
 
 musteriler.forEach(function(m,i){
 
 alan.innerHTML +=
 
-'<div class="musteri">'+
+'<div class="musteri">' +
 
-'<b>'+m.ad+'</b><br>'+
+'<b>'+m.ad+'</b><br>' +
 
-'📍 '+m.bolge+'<br>'+
+m.bolge+'<br>' +
 
-(m.telefon || '')+'<br>'+
+(m.telefon || '') +
 
-'<button onclick="musteriSil('+i+')">🗑️ Sil</button>'+
+'<br>' +
+
+'<button class="sil" onclick="musteriSil('+i+')">🗑️ Sil</button>' +
 
 '</div>';
 
@@ -426,17 +487,23 @@ alan.innerHTML +=
 
 }
 
+
 function musteriSil(i){
 
-if(confirm("Müşteri silinsin mi?")){
+if(!confirm("Müşteri silinsin mi?")){
+
+return;
+
+}
 
 musteriler.splice(i,1);
 
-localStorage.setItem("musteriler",JSON.stringify(musteriler));
+localStorage.setItem(
+"musteriler",
+JSON.stringify(musteriler)
+);
 
 listele();
-
-}
 
 }
 
@@ -447,17 +514,26 @@ function urunleriAc(){
 
 gizle();
 
-document.getElementById("urunler").classList.remove("hidden");
+document.getElementById("urunler")
+.classList.remove("hidden");
 
 urunleriListele();
 
 }
 
+
 function urunKaydet(){
 
-var ad = document.getElementById("urunAd").value.trim();
+var ad =
+document.getElementById("urunAd").value.trim();
 
-if(ad === ""){
+var maliyet =
+Number(document.getElementById("urunMaliyet").value) || 0;
+
+var satis =
+Number(document.getElementById("urunSatis").value) || 0;
+
+if(!ad){
 
 alert("Ürün adı girin.");
 
@@ -469,41 +545,55 @@ urunKayitlari.push({
 
 ad:ad,
 
-maliyet:document.getElementById("urunMaliyet").value,
+maliyet:maliyet,
 
-satis:document.getElementById("urunSatis").value
+satis:satis
 
 });
 
-localStorage.setItem("urunler",JSON.stringify(urunKayitlari));
+localStorage.setItem(
+"urunler",
+JSON.stringify(urunKayitlari)
+);
 
-document.getElementById("urunAd").value = "";
-
-document.getElementById("urunMaliyet").value = "";
-
-document.getElementById("urunSatis").value = "";
+document.getElementById("urunAd").value="";
+document.getElementById("urunMaliyet").value="";
+document.getElementById("urunSatis").value="";
 
 urunleriListele();
 
 }
 
+
 function urunleriListele(){
 
-var alan = document.getElementById("urunKayitListesi");
+var alan =
+document.getElementById("urunKayitListesi");
 
-alan.innerHTML = "";
+alan.innerHTML="";
 
-urunKayitlari.forEach(function(u){
+if(urunKayitlari.length === 0){
+
+alan.innerHTML =
+'<div class="card">Kayıtlı ürün yok.</div>';
+
+return;
+
+}
+
+urunKayitlari.forEach(function(u,i){
 
 alan.innerHTML +=
 
-'<div class="card">'+
+'<div class="card">' +
 
-'<b>'+u.ad+'</b><br>'+
+'<b>'+u.ad+'</b><br>' +
 
-'Maliyet: '+u.maliyet+' ₺<br>'+
+'Maliyet: '+Number(u.maliyet).toFixed(2)+' ₺<br>' +
 
-'Satış: '+u.satis+' ₺'+
+'Satış: '+Number(u.satis).toFixed(2)+' ₺<br>' +
+
+'<button class="sil" onclick="urunSil('+i+')">🗑️ Ürünü Sil</button>' +
 
 '</div>';
 
@@ -512,241 +602,499 @@ alan.innerHTML +=
 }
 
 
-/* SİPARİŞLER */
+function urunSil(i){
+
+if(!confirm("Ürün silinsin mi?")){
+
+return;
+
+}
+
+urunKayitlari.splice(i,1);
+
+localStorage.setItem(
+"urunler",
+JSON.stringify(urunKayitlari)
+);
+
+urunleriListele();
+
+}
+
+
+/* SİPARİŞ */
 
 function siparisleriAc(){
 
 gizle();
 
-document.getElementById("siparisler").classList.remove("hidden");
+document.getElementById("siparisler")
+.classList.remove("hidden");
 
-var musteriSec = document.getElementById("sipMusteri");
+var m =
+document.getElementById("sipMusteri");
 
-musteriSec.innerHTML = '<option value="">Müşteri seçin</option>';
+m.innerHTML =
+'<option value="">Müşteri seçin</option>';
 
-musteriler.forEach(function(m){
+musteriler.forEach(function(x){
 
-var secenek = document.createElement("option");
+var o =
+document.createElement("option");
 
-secenek.value = m.ad;
+o.value=x.ad;
+o.textContent=x.ad;
 
-secenek.textContent = m.ad+" - "+m.bolge;
-
-musteriSec.appendChild(secenek);
-
-});
-
-var urunSec = document.getElementById("sipUrun");
-
-urunSec.innerHTML = '<option value="">Ürün seçin</option>';
-
-urunKayitlari.forEach(function(u){
-
-var secenek = document.createElement("option");
-
-secenek.value = u.ad;
-
-secenek.textContent = u.ad;
-
-urunSec.appendChild(secenek);
+m.appendChild(o);
 
 });
 
-urunSec.onchange = function(){
 
-var urun = urunKayitlari.find(function(u){
+var u =
+document.getElementById("sipUrun");
 
-return u.ad === urunSec.value;
+u.innerHTML =
+'<option value="">Ürün seçin</option>';
+
+urunKayitlari.forEach(function(x){
+
+var o =
+document.createElement("option");
+
+o.value=x.ad;
+o.textContent=x.ad;
+
+u.appendChild(o);
+
+});
+
+
+u.onchange=function(){
+
+var urun =
+urunKayitlari.find(function(a){
+
+return a.ad === u.value;
 
 });
 
 if(urun){
 
-document.getElementById("sipFiyat").value = urun.satis;
+document.getElementById("sipFiyat").value =
+urun.satis;
 
 }
 
 };
 
+
+siparisSepeti=[];
+
+sepetGoster();
+
 siparisListele();
 
 }
 
-function siparisKaydet(){
-
-    var musteri = document.getElementById("sipMusteri").value;
-    var tarih = document.getElementById("sipTarih").value;
-
-    if(musteri === "" || tarih === ""){
-        alert("Müşteri ve teslim tarihini seçin.");
-        return;
-    }
-
-    if(sipariseEklenenUrunler.length === 0){
-        alert("Önce siparişe ürün ekleyin.");
-        return;
-    }
-
-    sipariseEklenenUrunler.forEach(function(u){
-        siparisler.push({
-            musteri: musteri,
-            urun: u.urun,
-            miktar: u.miktar,
-            fiyat: u.fiyat,
-            maliyet: u.maliyet,
-            tarih: tarih
-        });
-    });
-
-    localStorage.setItem("siparisler", JSON.stringify(siparisler));
-
-    sipariseEklenenUrunler = [];
-    document.getElementById("eklenenUrunler").innerHTML = "";
-    document.getElementById("sipTarih").value = "";
-
-    siparisListele();
-
-    alert("Sipariş kaydedildi.");
-}
-var sipariseEklenenUrunler = [];
 
 function sipariseUrunEkle(){
 
-    var urun = document.getElementById("sipUrun").value;
-    var miktar = document.getElementById("sipMiktar").value;
-    var fiyat = document.getElementById("sipFiyat").value;
+var urun =
+document.getElementById("sipUrun").value;
 
-    if(urun === "" || miktar === "" || fiyat === ""){
-        alert("Ürün, miktar ve fiyat bilgilerini doldurun.");
-        return;
-    }
+var miktar =
+Number(document.getElementById("sipMiktar").value);
 
-    var urunBilgi = urunKayitlari.find(function(u){
-        return u.ad === urun;
-    });
+var fiyat =
+Number(document.getElementById("sipFiyat").value);
 
-    sipariseEklenenUrunler.push({
-        urun: urun,
-        miktar: Number(miktar),
-        fiyat: Number(fiyat),
-        maliyet: urunBilgi ? Number(urunBilgi.maliyet) : 0
-    });
+if(!urun || !miktar){
 
-    var alan = document.getElementById("eklenenUrunler");
+alert("Ürün ve miktar girin.");
 
-    alan.innerHTML = "";
+return;
 
-    sipariseEklenenUrunler.forEach(function(u){
-        alan.innerHTML +=
-        "<div class='musteri'>📦 <b>" + u.urun + "</b>" +
-        "<br>Miktar: " + u.miktar +
-        " — " + u.fiyat.toFixed(2) + " ₺</div>";
-    });
-
-    document.getElementById("sipUrun").value = "";
-    document.getElementById("sipMiktar").value = "";
-    document.getElementById("sipFiyat").value = "";
 }
+
+var kayit =
+urunKayitlari.find(function(x){
+
+return x.ad === urun;
+
+});
+
+siparisSepeti.push({
+
+urun:urun,
+
+miktar:miktar,
+
+fiyat:fiyat,
+
+maliyet:kayit ?
+Number(kayit.maliyet) : 0
+
+});
+
+document.getElementById("sipUrun").value="";
+document.getElementById("sipMiktar").value="";
+document.getElementById("sipFiyat").value="";
+
+sepetGoster();
+
+}
+
+
+function sepetGoster(){
+
+var alan =
+document.getElementById("siparisSepeti");
+
+alan.innerHTML="";
+
+siparisSepeti.forEach(function(s,i){
+
+alan.innerHTML +=
+
+'<div class="musteri">' +
+
+'📦 <b>'+s.urun+'</b><br>' +
+
+'Miktar: '+s.miktar+'<br>' +
+
+'Birim fiyat: '+Number(s.fiyat).toFixed(2)+' ₺<br>' +
+
+'<button class="sil" onclick="sepettenSil('+i+')">🗑️ Çıkar</button>' +
+
+'</div>';
+
+});
+
+}
+
+
+function sepettenSil(i){
+
+siparisSepeti.splice(i,1);
+
+sepetGoster();
+
+}
+
+
+function siparisKaydet(){
+
+var musteri =
+document.getElementById("sipMusteri").value;
+
+var tarih =
+document.getElementById("sipTarih").value;
+
+if(!musteri){
+
+alert("Müşteri seçin.");
+
+return;
+
+}
+
+if(!tarih){
+
+alert("Teslim tarihini seçin.");
+
+return;
+
+}
+
+
+/* Ürün sepete eklenmeden Kaydet'e basılmışsa */
+
+if(siparisSepeti.length === 0){
+
+var urun =
+document.getElementById("sipUrun").value;
+
+var miktar =
+Number(document.getElementById("sipMiktar").value);
+
+var fiyat =
+Number(document.getElementById("sipFiyat").value);
+
+if(urun && miktar){
+
+var kayit =
+urunKayitlari.find(function(x){
+
+return x.ad === urun;
+
+});
+
+siparisSepeti.push({
+
+urun:urun,
+
+miktar:miktar,
+
+fiyat:fiyat,
+
+maliyet:kayit ?
+Number(kayit.maliyet) : 0
+
+});
+
+}
+
+}
+
+
+if(siparisSepeti.length === 0){
+
+alert("Siparişe en az bir ürün ekleyin.");
+
+return;
+
+}
+
+
+siparisSepeti.forEach(function(s){
+
+siparisler.push({
+
+musteri:musteri,
+
+urun:s.urun,
+
+miktar:s.miktar,
+
+fiyat:s.fiyat,
+
+maliyet:s.maliyet,
+
+tarih:tarih
+
+});
+
+});
+
+
+localStorage.setItem(
+"siparisler",
+JSON.stringify(siparisler)
+);
+
+
+siparisSepeti=[];
+
+sepetGoster();
+
+document.getElementById("sipUrun").value="";
+document.getElementById("sipMiktar").value="";
+document.getElementById("sipFiyat").value="";
+
+siparisListele();
+
+alert("Sipariş kaydedildi.");
+
+}
+
+
 function siparisListele(){
 
-    var alan = document.getElementById("siparisListesi");
-    alan.innerHTML = "";
+var alan =
+document.getElementById("siparisListesi");
 
-    var gruplar = {};
+alan.innerHTML="";
 
-    siparisler.forEach(function(s){
+if(siparisler.length === 0){
 
-        var anahtar = s.musteri + "||" + s.tarih;
+alan.innerHTML="Kayıtlı sipariş yok.";
 
-        if(!gruplar[anahtar]){
-            gruplar[anahtar] = {
-                musteri: s.musteri,
-                tarih: s.tarih,
-                urunler: []
-            };
-        }
+return;
 
-        gruplar[anahtar].urunler.push(s);
-    });
+}
 
-    Object.keys(gruplar).forEach(function(anahtar){
 
-        var grup = gruplar[anahtar];
-        var toplam = 0;
+var gruplar={};
 
-        var html =
-            '<div class="musteri">' +
-            '<b>' + grup.musteri + '</b><br>';
 
-        grup.urunler.forEach(function(s){
+siparisler.forEach(function(s){
 
-            var tutar =
-                (Number(s.miktar) || 0) *
-                (Number(s.fiyat) || 0);
+var anahtar =
+s.musteri+"|||"+s.tarih;
 
-            toplam += tutar;
+if(!gruplar[anahtar]){
 
-            html +=
-                '📦 ' + s.urun + '<br>' +
-                'Miktar: ' + s.miktar + '<br>' +
-                'Birim Fiyat: ' + Number(s.fiyat).toFixed(2) + ' ₺<br>' +
-                'Toplam: <b>' + tutar.toFixed(2) + ' ₺</b><br><br>';
-        });
+gruplar[anahtar]={
 
-        html +=
-            '<b>Sipariş Toplamı: ' + toplam.toFixed(2) + ' ₺</b><br>' +
-            '📅 ' + grup.tarih +
-            '<br><button onclick="siparisSil(\''+grup.musteri+'\',\''+grup.tarih+'\')">🗑️ Siparişi Sil</button>' +
-            '</div>';
+musteri:s.musteri,
 
-        alan.innerHTML += html;
-    });
+tarih:s.tarih,
+
+urunler:[]
+
+};
+
+}
+
+gruplar[anahtar].urunler.push(s);
+
+});
+
+
+Object.keys(gruplar)
+.reverse()
+.forEach(function(anahtar){
+
+var grup =
+gruplar[anahtar];
+
+var toplam=0;
+
+var kart =
+document.createElement("div");
+
+kart.className="musteri";
+
+
+var baslik =
+document.createElement("b");
+
+baslik.textContent =
+grup.musteri;
+
+kart.appendChild(baslik);
+
+kart.appendChild(
+document.createElement("br")
+);
+
+
+grup.urunler.forEach(function(s){
+
+var tutar =
+(Number(s.miktar)||0) *
+(Number(s.fiyat)||0);
+
+toplam += tutar;
+
+
+var urun =
+document.createElement("div");
+
+urun.innerHTML =
+'📦 '+s.urun+'<br>'+
+'Miktar: '+s.miktar+'<br>'+
+'Birim Fiyat: '+
+Number(s.fiyat).toFixed(2)+' ₺<br>'+
+'Toplam: <b>'+
+tutar.toFixed(2)+' ₺</b><br><br>';
+
+kart.appendChild(urun);
+
+});
+
+
+var toplamAlan =
+document.createElement("div");
+
+toplamAlan.innerHTML =
+'<b>Sipariş Toplamı: '+
+toplam.toFixed(2)+
+' ₺</b><br>📅 '+
+grup.tarih;
+
+kart.appendChild(toplamAlan);
+
+
+var silButon =
+document.createElement("button");
+
+silButon.className="sil";
+
+silButon.textContent =
+"🗑️ Siparişi Sil";
+
+silButon.onclick=function(){
+
+siparisSil(
+grup.musteri,
+grup.tarih
+);
+
+};
+
+kart.appendChild(silButon);
+
+
+alan.appendChild(kart);
+
+});
+
+}
+
+
 function siparisSil(musteri,tarih){
 
-    if(!confirm("Bu sipariş silinsin mi?")){
-        return;
-    }
+if(!confirm("Bu sipariş silinsin mi?")){
 
-    siparisler = siparisler.filter(function(s){
-        return !(s.musteri === musteri && s.tarih === tarih);
-    });
+return;
 
-    localStorage.setItem("siparisler",JSON.stringify(siparisler));
-
-    siparisListele();
 }
+
+siparisler =
+siparisler.filter(function(s){
+
+return !(
+s.musteri === musteri &&
+s.tarih === tarih
+);
+
+});
+
+
+localStorage.setItem(
+"siparisler",
+JSON.stringify(siparisler)
+);
+
+siparisListele();
+
+}
+
 
 /* BAKİYE */
 
 function bakiye(ad){
 
-var satis = 0;
+var satis=0;
 
-var odeme = 0;
+var odeme=0;
+
 
 siparisler.forEach(function(s){
 
 if(s.musteri === ad){
 
 satis +=
-
-(Number(s.miktar) || 0) *
-
-(Number(s.fiyat) || 0);
+(Number(s.miktar)||0) *
+(Number(s.fiyat)||0);
 
 }
 
 });
+
 
 tahsilatlar.forEach(function(t){
 
 if(t.musteri === ad){
 
-odeme += Number(t.tutar) || 0;
+odeme +=
+Number(t.tutar)||0;
 
 }
 
 });
+
 
 return {
 
@@ -767,158 +1115,185 @@ function cariAc(){
 
 gizle();
 
-document.getElementById("cari").classList.remove("hidden");
+document.getElementById("cari")
+.classList.remove("hidden");
 
-var sec = document.getElementById("cariMusteri");
 
-sec.innerHTML = '<option value="">Müşteri seçin</option>';
+var s =
+document.getElementById("cariMusteri");
+
+s.innerHTML =
+'<option value="">Müşteri seçin</option>';
+
 
 musteriler.forEach(function(m){
 
-var secenek = document.createElement("option");
+var o =
+document.createElement("option");
 
-secenek.value = m.ad;
+o.value=m.ad;
 
-secenek.textContent = m.ad+" - "+m.bolge;
+o.textContent=m.ad;
 
-sec.appendChild(secenek);
+s.appendChild(o);
 
 });
+
 
 cariGoster();
 
 }
 
+
 function cariGoster(){
 
-var ad = document.getElementById("cariMusteri").value;
+var ad =
+document.getElementById("cariMusteri").value;
 
-var gecmis = document.getElementById("tahsilatListesi");
+var liste =
+document.getElementById("tahsilatListesi");
 
-gecmis.innerHTML = "";
+liste.innerHTML="";
 
-if(ad === ""){
 
-document.getElementById("cariBilgi").innerHTML = "Müşteri seçin.";
+if(!ad){
+
+document.getElementById("cariBilgi")
+.innerHTML="Müşteri seçin.";
 
 return;
 
 }
 
-var b = bakiye(ad);
 
-document.getElementById("cariBilgi").innerHTML =
+var b =
+bakiye(ad);
 
-"<br><b>Toplam Satış:</b> "+b.satis.toFixed(2)+" ₺"+
 
-"<br><b>Toplam Tahsilat:</b> "+b.odeme.toFixed(2)+" ₺"+
+document.getElementById("cariBilgi")
+.innerHTML =
 
-"<br><b>Kalan Bakiye:</b> "+b.kalan.toFixed(2)+" ₺";
+"<br><b>Toplam Satış:</b> "+
+b.satis.toFixed(2)+" ₺"+
+
+"<br><b>Toplam Tahsilat:</b> "+
+b.odeme.toFixed(2)+" ₺"+
+
+"<br><b>Kalan Bakiye:</b> "+
+b.kalan.toFixed(2)+" ₺";
+
 
 tahsilatlar
-
 .filter(function(t){
 
 return t.musteri === ad;
 
 })
-
 .slice()
-
 .reverse()
-
 .forEach(function(t){
 
-gecmis.innerHTML +=
+liste.innerHTML +=
 
 '<div class="musteri">'+
-
 t.tarih+
-
 ' — <b>'+
-
 Number(t.tutar).toFixed(2)+
-
-' ₺</b></div>';
+' ₺</b>'+
+'</div>';
 
 });
 
 }
 
+
 function tahsilatKaydet(){
 
-var musteri = document.getElementById("cariMusteri").value;
+var musteri =
+document.getElementById("cariMusteri").value;
 
-var tutar = document.getElementById("tahsilatTutar").value;
+var tutar =
+Number(document.getElementById("tahsilatTutar").value);
 
-var tarih = document.getElementById("tahsilatTarih").value;
+var tarih =
+document.getElementById("tahsilatTarih").value;
 
-if(musteri === "" || tutar === "" || tarih === ""){
 
-alert("Müşteri, tutar ve tarih girin.");
+if(!musteri || !tutar || !tarih){
+
+alert("Bilgileri doldurun.");
 
 return;
 
 }
 
+
 tahsilatlar.push({
 
 musteri:musteri,
 
-tutar:Number(tutar),
+tutar:tutar,
 
 tarih:tarih
 
 });
 
-localStorage.setItem("tahsilatlar",JSON.stringify(tahsilatlar));
 
-document.getElementById("tahsilatTutar").value = "";
+localStorage.setItem(
+"tahsilatlar",
+JSON.stringify(tahsilatlar)
+);
+
+
+document.getElementById("tahsilatTutar").value="";
 
 cariGoster();
 
 }
 
 
-/* BÖLGE BAKİYELERİ */
+/* BÖLGE */
 
 function bolgeBakiyeleriAc(){
 
 gizle();
 
-document.getElementById("bolgeBakiyeleri").classList.remove("hidden");
-
-document.getElementById("bolgeBaslik").innerText = "Bölge seçin";
-
-document.getElementById("bolgeToplam").innerHTML = "";
-
-document.getElementById("bolgeMusteriListesi").innerHTML = "";
+document.getElementById("bolgeBakiyeleri")
+.classList.remove("hidden");
 
 }
 
+
 function bolgeListele(bolge){
 
-var bolgeMusterileri = musteriler.filter(function(m){
+var ms =
+musteriler.filter(function(m){
 
 return m.bolge === bolge;
 
 });
 
-var toplam = 0;
 
-var alan = document.getElementById("bolgeMusteriListesi");
+var toplam=0;
 
-alan.innerHTML = "";
+var alan =
+document.getElementById("bolgeMusteriListesi");
 
-document.getElementById("bolgeBaslik").innerText =
+alan.innerHTML="";
 
-bolge+" — "+bolgeMusterileri.length+" Müşteri";
 
-bolgeMusterileri.forEach(function(m){
+document.getElementById("bolgeBaslik")
+.textContent =
+bolge+" — "+ms.length+" Müşteri";
 
-var borc = bakiye(m.ad).kalan;
 
-toplam += borc;
+ms.forEach(function(m){
+
+var b =
+bakiye(m.ad).kalan;
+
+toplam += b;
+
 
 alan.innerHTML +=
 
@@ -928,389 +1303,193 @@ alan.innerHTML +=
 
 'Borç Bakiyesi: <b>'+
 
-borc.toFixed(2)+
+b.toFixed(2)+
 
-' ₺</b></div>';
+' ₺</b>'+
+
+'</div>';
 
 });
 
-document.getElementById("bolgeToplam").innerHTML =
+
+document.getElementById("bolgeToplam")
+.innerHTML =
 
 "<h3>Toplam Bölge Alacağı: "+
-
 toplam.toFixed(2)+
-
 " ₺</h3>";
 
-if(bolgeMusterileri.length === 0){
 
-alan.innerHTML = "Bu bölgede kayıtlı müşteri yok.";
+if(ms.length === 0){
+
+alan.innerHTML =
+"Bu bölgede kayıtlı müşteri yok.";
 
 }
 
 }
 
 
-/* TESLİM EDİLECEKLER */
+/* CİRO KÂR */
 
-function teslimEdileceklerAc(){
+function ciroKarAc(){
 
 gizle();
 
-document.getElementById("teslimEdilecekler").classList.remove("hidden");
+document.getElementById("ciroKar")
+.classList.remove("hidden");
 
-var yarin = new Date();
 
-yarin.setDate(yarin.getDate()+1);
+var ciro=0;
 
-var yyyy = yarin.getFullYear();
+var maliyet=0;
 
-var mm = String(yarin.getMonth()+1).padStart(2,"0");
 
-var dd = String(yarin.getDate()).padStart(2,"0");
+siparisler.forEach(function(s){
 
-var yarinTarih = yyyy+"-"+mm+"-"+dd;
+ciro +=
+(Number(s.miktar)||0) *
+(Number(s.fiyat)||0);
 
-var teslimatlar = siparisler.filter(function(s){
-
-return s.tarih === yarinTarih;
-
-});
-
-var bolgeler = [
-
-"Bandırma",
-
-"Erdek",
-
-"Gönen",
-
-"Manyas",
-
-"Edincik",
-
-"Avşa Adası",
-
-"Ocaklar"
-
-];
-
-var aktifBolge = 0;
-
-var genelToplam = 0;
-
-bolgeler.forEach(function(bolge){
-
-var varMi = teslimatlar.some(function(s){
-
-var m = musteriler.find(function(x){
-
-return x.ad === s.musteri;
+maliyet +=
+(Number(s.miktar)||0) *
+(Number(s.maliyet)||0);
 
 });
 
-return m && m.bolge === bolge;
 
-});
+document.getElementById("ciroToplam")
+.innerHTML =
+"<h3>Toplam Ciro: "+
+ciro.toFixed(2)+" ₺</h3>";
 
-if(varMi){
 
-aktifBolge++;
+document.getElementById("maliyetToplam")
+.innerHTML =
+"<h3>Toplam Maliyet: "+
+maliyet.toFixed(2)+" ₺</h3>";
+
+
+document.getElementById("karToplam")
+.innerHTML =
+"<h3>Toplam Kâr: "+
+(ciro-maliyet).toFixed(2)+" ₺</h3>";
 
 }
 
-});
 
-teslimatlar.forEach(function(s){
+/* YARIN TESLİM */
 
-genelToplam +=
-
-(Number(s.miktar) || 0) *
-
-(Number(s.fiyat) || 0);
-
-});
-
-document.getElementById("teslimOzet").innerHTML =
-
-"<b>Tarih:</b> "+dd+"."+mm+"."+yyyy+
-
-"<br><b>Aktif Bölge:</b> "+aktifBolge+
-
-"<br><b>Toplam Teslimat:</b> "+teslimatlar.length+
-
-"<br><b>Genel Toplam:</b> "+genelToplam.toFixed(2)+" ₺";
-
-var liste = document.getElementById("teslimListe");
-
-liste.innerHTML = "";
-
-if(teslimatlar.length === 0){
-
-liste.innerHTML =
-
-'<div class="card">Yarın için kayıtlı teslimat yok.</div>';
-
-return;
-
-}
-
-bolgeler.forEach(function(bolge){
-
-var bolgeSiparisleri = teslimatlar.filter(function(s){
-
-var m = musteriler.find(function(x){
-
-return x.ad === s.musteri;
-
-});
-
-return m && m.bolge === bolge;
-
-});
-
-if(bolgeSiparisleri.length === 0){
-
-return;
-
-}
-
-var bolgeToplam = 0;
-
-var kart = document.createElement("div");
-
-kart.className = "bolge-kart";
-
-var baslik = document.createElement("div");
-
-baslik.className = "bolge-baslik";
-
-baslik.textContent =
-
-"📍 "+bolge.toUpperCase()+
-
-" — "+bolgeSiparisleri.length+
-
-" Teslimat";
-
-kart.appendChild(baslik);
-
-var icerik = document.createElement("div");
-
-icerik.className = "bolge-icerik";
-
-bolgeSiparisleri.forEach(function(s){
-
-var tutar =
-
-(Number(s.miktar) || 0) *
-
-(Number(s.fiyat) || 0);
-
-bolgeToplam += tutar;
-
-var siparis = document.createElement("div");
-
-siparis.className = "musteri";
-
-siparis.innerHTML =
-
-'<b style="font-size:19px">'+s.musteri+'</b><br>'+
-
-'📦 '+s.urun+'<br>'+
-
-'Miktar: <b>'+s.miktar+'</b><br>'+
-
-'Birim Fiyat: '+Number(s.fiyat).toFixed(2)+' ₺<br>'+
-
-'Toplam: <b>'+tutar.toFixed(2)+' ₺</b>';
-
-icerik.appendChild(siparis);
-
-});
-
-var toplamAlan = document.createElement("div");
-
-toplamAlan.style.paddingTop = "15px";
-
-toplamAlan.style.fontSize = "18px";
-
-toplamAlan.style.fontWeight = "bold";
-
-toplamAlan.textContent =
-
-bolge+" Toplamı: "+
-
-bolgeToplam.toFixed(2)+
-
-" ₺";
-
-icerik.appendChild(toplamAlan);
-
-kart.appendChild(icerik);
-
-liste.appendChild(kart);
-
-});
-
-}
-/* TÜM GELECEK TESLİMATLAR */
-
-function tumTeslimatlarAc(){
+function yarinTeslimAc(){
 
 gizle();
 
-document.getElementById("teslimEdilecekler").classList.remove("hidden");
-
-/* BUGÜNÜ YYYY-MM-DD OLARAK HAZIRLA */
-
-var bugun = new Date();
-
-var bugunYil = bugun.getFullYear();
-var bugunAy = String(bugun.getMonth()+1).padStart(2,"0");
-var bugunGun = String(bugun.getDate()).padStart(2,"0");
-
-var bugunTarih = bugunYil+"-"+bugunAy+"-"+bugunGun;
+document.getElementById("yarinTeslim")
+.classList.remove("hidden");
 
 
-/* BUGÜNDEN İTİBAREN TÜM SİPARİŞLER */
+var yarin =
+new Date();
 
-var gelecekSiparisler = siparisler.filter(function(s){
-
-return s.tarih >= bugunTarih;
-
-});
-
-
-/* TARİHE GÖRE SIRALA */
-
-gelecekSiparisler.sort(function(a,b){
-
-return a.tarih.localeCompare(b.tarih);
-
-});
+yarin.setDate(
+yarin.getDate()+1
+);
 
 
-var liste = document.getElementById("teslimListe");
+var yyyy =
+yarin.getFullYear();
 
-liste.innerHTML = "";
+var mm =
+String(
+yarin.getMonth()+1
+).padStart(2,"0");
 
-
-/* HİÇ TESLİMAT YOKSA */
-
-if(gelecekSiparisler.length === 0){
-
-document.getElementById("teslimOzet").innerHTML =
-"<b>Bekleyen teslimat bulunmuyor.</b>";
-
-liste.innerHTML =
-'<div class="card">Bugünden sonraki tarihler için kayıtlı teslimat yok.</div>';
-
-return;
-
-}
+var dd =
+String(
+yarin.getDate()
+).padStart(2,"0");
 
 
-/* GENEL TOPLAM */
-
-var genelToplam = 0;
-
-gelecekSiparisler.forEach(function(s){
-
-genelToplam +=
-(Number(s.miktar) || 0) *
-(Number(s.fiyat) || 0);
-
-});
+var tarih =
+yyyy+"-"+mm+"-"+dd;
 
 
-/* KAÇ FARKLI TARİH VAR */
-
-var tarihler = [];
-
-gelecekSiparisler.forEach(function(s){
-
-if(tarihler.indexOf(s.tarih) === -1){
-
-tarihler.push(s.tarih);
-
-}
-
-});
-
-
-document.getElementById("teslimOzet").innerHTML =
-
-"<b>Bekleyen Teslimat:</b> "+gelecekSiparisler.length+
-
-"<br><b>Teslimat Günü:</b> "+tarihler.length+
-
-"<br><b>Genel Toplam:</b> "+genelToplam.toFixed(2)+" ₺";
-
-
-var bolgeler = [
-"Bandırma",
-"Erdek",
-"Gönen",
-"Manyas",
-"Edincik",
-"Avşa Adası",
-"Ocaklar"
-];
-
-
-/* HER TARİHİ AYRI GÖSTER */
-
-tarihler.forEach(function(tarih){
-
-var parcalar = tarih.split("-");
-
-var tarihYazi =
-parcalar[2]+"."+parcalar[1]+"."+parcalar[0];
-
-
-var tarihSiparisleri = gelecekSiparisler.filter(function(s){
+var yarinSiparisler =
+siparisler.filter(function(s){
 
 return s.tarih === tarih;
 
 });
 
 
-/* TARİH BAŞLIĞI */
+var musterilerYarin = [];
 
-var tarihKart = document.createElement("div");
+yarinSiparisler.forEach(function(s){
 
-tarihKart.className = "card";
+if(
+musterilerYarin.indexOf(s.musteri) === -1
+){
 
-tarihKart.style.marginTop = "22px";
+musterilerYarin.push(s.musteri);
 
-tarihKart.style.background = "#e3f2fd";
+}
 
-tarihKart.innerHTML =
-
-'<div style="font-size:23px;font-weight:bold;">'+
-'📅 '+tarihYazi+
-'</div>'+
-'<div style="margin-top:7px;">'+
-'Toplam Teslimat: <b>'+tarihSiparisleri.length+'</b>'+
-'</div>';
-
-liste.appendChild(tarihKart);
+});
 
 
-/* O TARİHTEKİ BÖLGELER */
+document.getElementById("yarinOzet")
+.innerHTML =
+
+"<b>Tarih:</b> "+
+dd+"."+mm+"."+yyyy+
+
+"<br><b>Toplam Müşteri:</b> "+
+musterilerYarin.length;
+
+
+var liste =
+document.getElementById("yarinListe");
+
+liste.innerHTML="";
+
+
+if(yarinSiparisler.length === 0){
+
+liste.innerHTML =
+'<div class="card">Yarın için kayıtlı teslimat yok.</div>';
+
+return;
+
+}
+
+
+var bolgeler = [
+
+"Bandırma",
+"Erdek",
+"Gönen",
+"Manyas",
+"Edincik",
+"Avşa Adası",
+"Ocaklar"
+
+];
+
 
 bolgeler.forEach(function(bolge){
 
-var bolgeSiparisleri = tarihSiparisleri.filter(function(s){
+var bolgeSiparisleri =
+yarinSiparisler.filter(function(s){
 
-var musteri = musteriler.find(function(m){
+var musteri =
+musteriler.find(function(m){
 
 return m.ad === s.musteri;
 
 });
 
-return musteri && musteri.bolge === bolge;
+return musteri &&
+musteri.bolge === bolge;
 
 });
 
@@ -1322,131 +1501,108 @@ return;
 }
 
 
-var bolgeToplam = 0;
+var kart =
+document.createElement("div");
+
+kart.className="card";
 
 
-var kart = document.createElement("div");
-
-kart.className = "bolge-kart";
-
-
-var baslik = document.createElement("div");
-
-baslik.className = "bolge-baslik";
+var baslik =
+document.createElement("h2");
 
 baslik.textContent =
-
-"📍 "+bolge.toUpperCase()+
-" — "+bolgeSiparisleri.length+
-" Teslimat";
-
+"📍 "+bolge;
 
 kart.appendChild(baslik);
 
 
-var icerik = document.createElement("div");
-
-icerik.className = "bolge-icerik";
+var gruplar={};
 
 
 bolgeSiparisleri.forEach(function(s){
 
-var tutar =
+if(!gruplar[s.musteri]){
 
-(Number(s.miktar) || 0) *
-(Number(s.fiyat) || 0);
+gruplar[s.musteri]=[];
 
-bolgeToplam += tutar;
+}
 
-
-var siparis = document.createElement("div");
-
-siparis.className = "musteri";
-
-siparis.innerHTML =
-
-'<b style="font-size:19px">'+s.musteri+'</b><br>'+
-
-'📦 '+s.urun+'<br>'+
-
-'Miktar: <b>'+s.miktar+'</b><br>'+
-
-'Birim Fiyat: '+Number(s.fiyat).toFixed(2)+' ₺<br>'+
-
-'Toplam: <b>'+tutar.toFixed(2)+' ₺</b>';
-
-
-icerik.appendChild(siparis);
+gruplar[s.musteri].push(s);
 
 });
 
 
-var toplamAlan = document.createElement("div");
+Object.keys(gruplar)
+.forEach(function(musteriAdi){
 
-toplamAlan.style.paddingTop = "15px";
+var musteriDiv =
+document.createElement("div");
 
-toplamAlan.style.fontSize = "18px";
-
-toplamAlan.style.fontWeight = "bold";
-
-toplamAlan.textContent =
-
-bolge+" Toplamı: "+
-bolgeToplam.toFixed(2)+
-" ₺";
+musteriDiv.className="musteri";
 
 
-icerik.appendChild(toplamAlan);
+var bas =
+document.createElement("b");
 
-kart.appendChild(icerik);
+bas.textContent =
+musteriAdi;
+
+musteriDiv.appendChild(bas);
+
+musteriDiv.appendChild(
+document.createElement("br")
+);
+
+
+var toplam=0;
+
+
+gruplar[musteriAdi]
+.forEach(function(s){
+
+var tutar =
+(Number(s.miktar)||0) *
+(Number(s.fiyat)||0);
+
+toplam += tutar;
+
+
+var satir =
+document.createElement("div");
+
+satir.innerHTML =
+
+'📦 '+s.urun+
+' — '+s.miktar+
+' × '+
+Number(s.fiyat).toFixed(2)+
+' ₺';
+
+musteriDiv.appendChild(satir);
+
+});
+
+
+var toplamDiv =
+document.createElement("div");
+
+toplamDiv.innerHTML =
+
+'<b>Toplam: '+
+toplam.toFixed(2)+
+' ₺</b>';
+
+musteriDiv.appendChild(toplamDiv);
+
+
+kart.appendChild(musteriDiv);
+
+});
+
 
 liste.appendChild(kart);
 
 });
-
-});
-
-}
-
-/* CİRO VE KÂR */
-
-function ciroKarAc(){
-
-gizle();
-
-document.getElementById("ciroKar").classList.remove("hidden");
-
-var ciro = 0;
-
-var maliyet = 0;
-
-siparisler.forEach(function(s){
-
-ciro +=
-
-(Number(s.miktar) || 0) *
-
-(Number(s.fiyat) || 0);
-
-maliyet +=
-
-(Number(s.miktar) || 0) *
-
-(Number(s.maliyet) || 0);
-
-});
-
-document.getElementById("ciroToplam").innerText =
-
-"Toplam Ciro: "+ciro.toFixed(2)+" ₺";
-
-document.getElementById("maliyetToplam").innerText =
-
-"Toplam Maliyet: "+maliyet.toFixed(2)+" ₺";
-
-document.getElementById("karToplam").innerText =
-
-"Toplam Kâr: "+(ciro-maliyet).toFixed(2)+" ₺";
 
 }
 
