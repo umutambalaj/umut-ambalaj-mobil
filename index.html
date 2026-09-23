@@ -2,78 +2,26 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Umut Ambalaj</title>
 
 <style>
-body{
-    font-family:Arial,sans-serif;
-    margin:0;
-    background:#f4f6f8;
-}
-header{
-    background:#1565c0;
-    color:white;
-    padding:20px;
-    text-align:center;
-}
-.container{
-    padding:15px;
-    max-width:700px;
-    margin:auto;
-}
-button{
-    width:100%;
-    padding:15px;
-    margin:6px 0;
-    border:0;
-    border-radius:8px;
-    background:#1565c0;
-    color:white;
-    font-size:17px;
-}
-.sil{
-    background:#c62828;
-}
-.duzenle{
-    background:#ef6c00;
-}
-.iptal{
-    background:#616161;
-}
-.card{
-    background:white;
-    padding:15px;
-    margin-top:12px;
-    border-radius:10px;
-}
-input,select,textarea{
-    width:100%;
-    padding:12px;
-    margin:6px 0;
-    box-sizing:border-box;
-    font-size:16px;
-}
-.hidden{
-    display:none;
-}
-.musteri{
-    border-bottom:1px solid #ddd;
-    padding:10px 0;
-}
-.tarihBaslik{
-    background:#1565c0;
-    color:white;
-    padding:12px;
-    border-radius:8px;
-    margin-top:15px;
-    font-size:19px;
-    font-weight:bold;
-}
-.bolgeBaslik{
-    font-size:18px;
-    margin-top:8px;
-}
+body{font-family:Arial;margin:0;background:#f4f6f8}
+header{background:#1565c0;color:white;padding:20px;text-align:center}
+.container{padding:15px;max-width:700px;margin:auto}
+button{width:100%;padding:14px;margin:5px 0;border:0;border-radius:8px;background:#1565c0;color:white;font-size:16px}
+.red{background:#c62828}
+.orange{background:#ef6c00}
+.green{background:#2e7d32}
+.gray{background:#616161}
+.card{background:white;padding:15px;margin-top:12px;border-radius:10px}
+input,select,textarea{width:100%;padding:12px;margin:5px 0;box-sizing:border-box;font-size:16px}
+.hidden{display:none}
+.row{border-bottom:1px solid #ddd;padding:10px 0}
+.region{font-size:19px;border-bottom:2px solid #1565c0;padding:8px 0}
+.date{background:#1565c0;color:white;padding:10px;border-radius:8px;font-weight:bold}
+.info{background:#eef5ff;padding:12px;border-radius:8px;margin:8px 0}
+.late{background:#ffebee;padding:10px;border-radius:8px;margin:8px 0}
 </style>
 </head>
 
@@ -86,74 +34,34 @@ input,select,textarea{
 
 <div class="container">
 
-<!-- ANA SAYFA -->
-
-<div id="ana">
-
-<button onclick="teslimEdileceklerAc()">
-🚚 Teslim Edilecekler
-</button>
-
-<button onclick="musterileriAc()">
-👥 Müşteriler
-</button>
-
-<button onclick="siparisleriAc()">
-📦 Siparişler
-</button>
-
-<button onclick="urunleriAc()">
-📦 Ürünler
-</button>
-
-<button onclick="cariAc()">
-💰 Cari / Tahsilat
-</button>
-
-<button onclick="ciroKarAc()">
-📊 Ciro ve Kâr
-</button>
-
-<button onclick="bolgeBakiyeleriAc()">
-📍 Bölge Bakiyeleri
-</button>
+<div id="home">
+<button onclick="openDeliveries()">🚚 Teslim Edilecekler</button>
+<button onclick="openCustomers()">👥 Müşteriler</button>
+<button onclick="openOrders()">📦 Siparişler</button>
+<button onclick="openProducts()">📦 Ürünler</button>
+<button onclick="openCurrent()">💰 Cari / Tahsilat</button>
+<button onclick="openProfit()">📊 Ciro ve Kâr</button>
+<button onclick="openBalances()">📍 Bölge Bakiyeleri</button>
 
 <div class="card">
 Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocaklar
 </div>
-
-</div>
-
-
-<!-- TESLİM EDİLECEKLER -->
-
-<div id="teslimEdilecekler" class="hidden">
-
-<button onclick="anaSayfa()">← Ana Sayfa</button>
-
-<div class="card">
-<h2>🚚 Teslim Edilecekler</h2>
-<div id="teslimOzet"></div>
-</div>
-
-<div id="teslimListe"></div>
-
 </div>
 
 
 <!-- MÜŞTERİLER -->
 
-<div id="musteriler" class="hidden">
+<div id="customers" class="hidden">
 
-<button onclick="anaSayfa()">← Ana Sayfa</button>
+<button onclick="home()">← Ana Sayfa</button>
 
 <div class="card">
 
 <h2>👥 Yeni Müşteri</h2>
 
-<input id="ad" placeholder="Müşteri adı">
+<input id="cName" placeholder="Müşteri adı">
 
-<select id="bolge">
+<select id="cRegion">
 <option value="">Bölge seçin</option>
 <option>Bandırma</option>
 <option>Erdek</option>
@@ -164,22 +72,17 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 <option>Ocaklar</option>
 </select>
 
-<input id="telefon" placeholder="Telefon">
+<input id="cPhone" placeholder="Telefon">
 
-<textarea id="adres" placeholder="Adres"></textarea>
+<textarea id="cAddress" placeholder="Adres"></textarea>
 
-<button onclick="musteriKaydet()">
-💾 Müşteriyi Kaydet
-</button>
+<button onclick="saveCustomer()">💾 Müşteriyi Kaydet</button>
 
 </div>
 
 <div class="card">
-
 <h2>Müşteri Listesi</h2>
-
-<div id="liste"></div>
-
+<div id="customerList"></div>
 </div>
 
 </div>
@@ -187,68 +90,88 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 
 <!-- ÜRÜNLER -->
 
-<div id="urunler" class="hidden">
+<div id="products" class="hidden">
 
-<button onclick="anaSayfa()">← Ana Sayfa</button>
+<button onclick="home()">← Ana Sayfa</button>
 
 <div class="card">
 
 <h2>📦 Yeni Ürün</h2>
 
-<input id="urunAd" placeholder="Ürün adı">
+<input id="pName" placeholder="Ürün adı">
 
-<input id="urunMaliyet" type="number" step="0.01" placeholder="Maliyet ₺">
+<input id="pCost" type="number" step=".01" placeholder="Maliyet ₺">
 
-<input id="urunSatis" type="number" step="0.01" placeholder="Satış ₺">
+<input id="pSale" type="number" step=".01" placeholder="Satış ₺">
 
-<button onclick="urunKaydet()">
-💾 Ürünü Kaydet
-</button>
+<button onclick="saveProduct()">💾 Ürünü Kaydet</button>
 
 </div>
 
-<div id="urunKayitListesi"></div>
+<div class="card">
+
+<h2>🔍 Ürün Ara</h2>
+
+<input id="pSearch"
+placeholder="Ürün adını yazın..."
+oninput="listProducts()">
+
+</div>
+
+<div id="productList"></div>
 
 </div>
 
 
 <!-- SİPARİŞLER -->
 
-<div id="siparisler" class="hidden">
+<div id="orders" class="hidden">
 
-<button onclick="anaSayfa()">← Ana Sayfa</button>
+<button onclick="home()">← Ana Sayfa</button>
 
 <div class="card">
 
-<h2 id="siparisFormBaslik">📦 Yeni Sipariş</h2>
+<h2 id="orderTitle">📦 Yeni Sipariş</h2>
 
-<select id="sipMusteri">
+<select id="oCustomer" onchange="orderBalance()">
 <option value="">Müşteri seçin</option>
 </select>
 
-<select id="sipUrun">
+<div id="oBalance" class="info">
+Müşteri seçildiğinde bakiyesi görünür.
+</div>
+
+<select id="oProduct">
 <option value="">Ürün seçin</option>
 </select>
 
-<input id="sipMiktar" type="number" step="0.01" placeholder="Miktar">
+<input id="oQty"
+type="number"
+step=".01"
+placeholder="Miktar"
+oninput="orderBalance()">
 
-<input id="sipFiyat" type="number" step="0.01" placeholder="Birim fiyat ₺">
+<input id="oPrice"
+type="number"
+step=".01"
+placeholder="Birim fiyat ₺"
+oninput="orderBalance()">
 
-<button onclick="sipariseUrunEkle()">
+<button onclick="addBasket()">
 ➕ Siparişe Ürün Ekle
 </button>
 
-<div id="siparisSepeti"></div>
+<div id="basket"></div>
 
-<input id="sipTarih" type="date">
+<input id="oDate" type="date">
 
-<button id="siparisKaydetButon" onclick="siparisKaydet()">
+<button id="orderSave" onclick="saveOrder()">
 💾 Siparişi Kaydet
 </button>
 
-<button id="duzenlemeIptalButon"
-class="iptal hidden"
-onclick="siparisDuzenlemeIptal()">
+<button id="cancelEdit"
+class="gray hidden"
+onclick="cancelOrderEdit()">
 ✖️ Düzenlemeyi İptal Et
 </button>
 
@@ -258,52 +181,139 @@ onclick="siparisDuzenlemeIptal()">
 
 <h2>📅 Siparişler</h2>
 
-<div id="siparisListesi"></div>
+<div id="orderList"></div>
 
 </div>
+
+</div>
+
+
+<!-- TESLİMATLAR -->
+
+<div id="deliveries" class="hidden">
+
+<button onclick="home()">← Ana Sayfa</button>
+
+<div class="card">
+
+<h2>🚚 Teslim Edilecekler</h2>
+
+<button onclick="deliveryRegion('Tümü')">
+Tüm Bölgeler
+</button>
+
+<button onclick="deliveryRegion('Bandırma')">
+Bandırma
+</button>
+
+<button onclick="deliveryRegion('Erdek')">
+Erdek
+</button>
+
+<button onclick="deliveryRegion('Gönen')">
+Gönen
+</button>
+
+<button onclick="deliveryRegion('Manyas')">
+Manyas
+</button>
+
+<button onclick="deliveryRegion('Edincik')">
+Edincik
+</button>
+
+<button onclick="deliveryRegion('Avşa Adası')">
+Avşa Adası
+</button>
+
+<button onclick="deliveryRegion('Ocaklar')">
+Ocaklar
+</button>
+
+<div id="deliverySummary"></div>
+
+</div>
+
+<div id="deliveryList"></div>
 
 </div>
 
 
 <!-- CARİ -->
 
-<div id="cari" class="hidden">
+<div id="current" class="hidden">
 
-<button onclick="anaSayfa()">← Ana Sayfa</button>
+<button onclick="home()">← Ana Sayfa</button>
 
 <div class="card">
 
 <h2>💰 Cari / Tahsilat</h2>
 
-<select id="cariMusteri" onchange="cariGoster()">
+<select id="curCustomer" onchange="showCurrent()">
 <option value="">Müşteri seçin</option>
 </select>
 
-<div id="cariBilgi">
+<div id="curInfo">
 Müşteri seçin.
 </div>
 
 </div>
 
+
 <div class="card">
 
 <h2>💵 Tahsilat Gir</h2>
 
-<input id="tahsilatTutar" type="number" step="0.01" placeholder="Tahsilat tutarı ₺">
+<input id="payAmount"
+type="number"
+step=".01"
+placeholder="Tahsilat ₺">
 
-<input id="tahsilatTarih" type="date">
+<input id="payDate" type="date">
 
-<button onclick="tahsilatKaydet()">
+<button onclick="savePayment()">
 💾 Tahsilatı Kaydet
 </button>
 
 </div>
 
+
+<div class="card">
+
+<h2>📅 Planlı Tahsilat</h2>
+
+<select id="planCustomer">
+<option value="">Müşteri seçin</option>
+</select>
+
+<input id="planAmount"
+type="number"
+step=".01"
+placeholder="Beklenen tahsilat ₺">
+
+<input id="planDate" type="date">
+
+<button onclick="savePlan()">
+📅 Planla
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>⏰ Planlı Tahsilatlar</h2>
+
+<div id="planList"></div>
+
+</div>
+
+
 <div class="card">
 
 <h2>📋 Tahsilat Geçmişi</h2>
 
-<div id="tahsilatListesi"></div>
+<div id="payList"></div>
 
 </div>
 
@@ -312,17 +322,21 @@ Müşteri seçin.
 
 <!-- CİRO KÂR -->
 
-<div id="ciroKar" class="hidden">
+<div id="profit" class="hidden">
 
-<button onclick="anaSayfa()">← Ana Sayfa</button>
+<button onclick="home()">← Ana Sayfa</button>
 
 <div class="card">
 
-<h2>📊 Ciro ve Kâr</h2>
+<h2>📊 Günlük Ciro ve Kâr</h2>
 
-<div id="ciroToplam"></div>
-<div id="maliyetToplam"></div>
-<div id="karToplam"></div>
+<input id="profitDate"
+type="date"
+onchange="calcProfit()">
+
+<div id="revenue"></div>
+<div id="cost"></div>
+<div id="gain"></div>
 
 </div>
 
@@ -331,30 +345,63 @@ Müşteri seçin.
 
 <!-- BÖLGE BAKİYELERİ -->
 
-<div id="bolgeBakiyeleri" class="hidden">
+<div id="balances" class="hidden">
 
-<button onclick="anaSayfa()">← Ana Sayfa</button>
+<button onclick="home()">← Ana Sayfa</button>
 
 <div class="card">
 
 <h2>📍 Bölge Bakiyeleri</h2>
 
-<button onclick="bolgeListele('Bandırma')">Bandırma</button>
-<button onclick="bolgeListele('Erdek')">Erdek</button>
-<button onclick="bolgeListele('Gönen')">Gönen</button>
-<button onclick="bolgeListele('Manyas')">Manyas</button>
-<button onclick="bolgeListele('Edincik')">Edincik</button>
-<button onclick="bolgeListele('Avşa Adası')">Avşa Adası</button>
-<button onclick="bolgeListele('Ocaklar')">Ocaklar</button>
+<button onclick="listRegion('Bandırma')">
+Bandırma
+</button>
+
+<button onclick="listRegion('Erdek')">
+Erdek
+</button>
+
+<button onclick="listRegion('Gönen')">
+Gönen
+</button>
+
+<button onclick="listRegion('Manyas')">
+Manyas
+</button>
+
+<button onclick="listRegion('Edincik')">
+Edincik
+</button>
+
+<button onclick="listRegion('Avşa Adası')">
+Avşa Adası
+</button>
+
+<button onclick="listRegion('Ocaklar')">
+Ocaklar
+</button>
 
 </div>
 
+
 <div class="card">
 
-<h2 id="bolgeBaslik">Bölge seçin</h2>
+<h2 id="regionTitle">
+Bölge seçin
+</h2>
 
-<div id="bolgeToplam"></div>
-<div id="bolgeMusteriListesi"></div>
+<div id="regionTotal"></div>
+
+<div id="regionList"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>🧾 Bakiye İşlem Geçmişi</h2>
+
+<div id="adjustHistory"></div>
 
 </div>
 
@@ -365,80 +412,221 @@ Müşteri seçin.
 
 <script>
 
-/* VERİLER */
-
-var musteriler =
+var customers =
 JSON.parse(localStorage.getItem("musteriler")) || [];
 
-var siparisler =
+var orders =
 JSON.parse(localStorage.getItem("siparisler")) || [];
 
-var urunKayitlari =
+var products =
 JSON.parse(localStorage.getItem("urunler")) || [];
 
-var tahsilatlar =
+var payments =
 JSON.parse(localStorage.getItem("tahsilatlar")) || [];
 
-var siparisSepeti = [];
+var plans =
+JSON.parse(localStorage.getItem("planliTahsilatlar")) || [];
 
-var duzenlenenSiparis = null;
+var adjustments =
+JSON.parse(localStorage.getItem("bakiyeIslemleri")) || [];
+
+var basket = [];
+
+var editing = null;
+
+var selectedDelivery = "Tümü";
+
+var selectedRegion = "";
+
+var regions = [
+"Bandırma",
+"Erdek",
+"Gönen",
+"Manyas",
+"Edincik",
+"Avşa Adası",
+"Ocaklar"
+];
 
 
-/* SAYFALAR */
+function ymd(){
 
-function gizle(){
+var d = new Date();
+
+return d.getFullYear()+"-"+
+String(d.getMonth()+1).padStart(2,"0")+"-"+
+String(d.getDate()).padStart(2,"0");
+
+}
+
+
+function fmt(t){
+
+if(!t) return "";
+
+var p=t.split("-");
+
+if(p.length!==3) return t;
+
+return p[2]+"."+p[1]+"."+p[0];
+
+}
+
+
+function hide(){
 
 [
-"ana",
-"musteriler",
-"siparisler",
-"urunler",
-"ciroKar",
-"cari",
-"bolgeBakiyeleri",
-"teslimEdilecekler"
+"home",
+"customers",
+"products",
+"orders",
+"deliveries",
+"current",
+"profit",
+"balances"
 ].forEach(function(id){
 
-document.getElementById(id).classList.add("hidden");
+document.getElementById(id)
+.classList.add("hidden");
 
 });
 
 }
 
 
-function anaSayfa(){
+function home(){
 
-gizle();
+hide();
 
-document.getElementById("ana")
+document.getElementById("home")
 .classList.remove("hidden");
 
 }
 
 
-/* MÜŞTERİ */
+/* =========================
+   BAKİYE
+========================= */
 
-function musterileriAc(){
+function balance(name){
 
-gizle();
+var sales=0;
+var paid=0;
+var adjust=0;
 
-document.getElementById("musteriler")
-.classList.remove("hidden");
+orders.forEach(function(x){
 
-listele();
+if(x.musteri===name){
+
+sales +=
+(Number(x.miktar)||0) *
+(Number(x.fiyat)||0);
+
+}
+
+});
+
+
+payments.forEach(function(x){
+
+if(x.musteri===name){
+
+paid += Number(x.tutar)||0;
+
+}
+
+});
+
+
+adjustments.forEach(function(x){
+
+if(x.musteri===name){
+
+adjust += Number(x.etki)||0;
+
+}
+
+});
+
+
+return {
+
+sales:sales,
+
+paid:paid,
+
+adjust:adjust,
+
+total:sales-paid+adjust
+
+};
 
 }
 
 
-function musteriKaydet(){
+/* =========================
+   SELECT MÜŞTERİ
+========================= */
 
-var ad =
-document.getElementById("ad").value.trim();
+function fillSelect(id){
 
-var bolge =
-document.getElementById("bolge").value;
+var e=document.getElementById(id);
 
-if(!ad || !bolge){
+e.innerHTML =
+'<option value="">Müşteri seçin</option>';
+
+customers
+.slice()
+.sort(function(a,b){
+
+return a.ad.localeCompare(
+b.ad,
+"tr"
+);
+
+})
+.forEach(function(x){
+
+var o=document.createElement("option");
+
+o.value=x.ad;
+
+o.textContent=x.ad;
+
+e.appendChild(o);
+
+});
+
+}
+
+
+/* =========================
+   MÜŞTERİLER
+========================= */
+
+function openCustomers(){
+
+hide();
+
+document.getElementById("customers")
+.classList.remove("hidden");
+
+listCustomers();
+
+}
+
+
+function saveCustomer(){
+
+var name =
+document.getElementById("cName")
+.value.trim();
+
+var region =
+document.getElementById("cRegion")
+.value;
+
+if(!name || !region){
 
 alert("Müşteri adı ve bölge zorunludur.");
 
@@ -446,37 +634,46 @@ return;
 
 }
 
-musteriler.push({
 
-ad:ad,
-bolge:bolge,
-telefon:document.getElementById("telefon").value,
-adres:document.getElementById("adres").value
+customers.push({
+
+ad:name,
+
+bolge:region,
+
+telefon:
+document.getElementById("cPhone").value,
+
+adres:
+document.getElementById("cAddress").value
 
 });
 
+
 localStorage.setItem(
 "musteriler",
-JSON.stringify(musteriler)
+JSON.stringify(customers)
 );
 
-document.getElementById("ad").value="";
-document.getElementById("telefon").value="";
-document.getElementById("adres").value="";
 
-listele();
+document.getElementById("cName").value="";
+document.getElementById("cPhone").value="";
+document.getElementById("cAddress").value="";
+
+listCustomers();
 
 }
 
 
-function listele(){
+function listCustomers(){
 
 var alan =
-document.getElementById("liste");
+document.getElementById("customerList");
 
 alan.innerHTML="";
 
-if(musteriler.length === 0){
+
+if(customers.length===0){
 
 alan.innerHTML="Kayıtlı müşteri yok.";
 
@@ -484,24 +681,75 @@ return;
 
 }
 
-musteriler.forEach(function(m,i){
 
-alan.innerHTML +=
+regions.forEach(function(region){
 
-'<div class="musteri">' +
-'<b>'+m.ad+'</b><br>' +
-m.bolge+'<br>' +
-(m.telefon || '') +
-'<br>' +
-'<button class="sil" onclick="musteriSil('+i+')">🗑️ Sil</button>' +
-'</div>';
+var liste =
+customers
+.map(function(m,i){
+
+return {
+m:m,
+i:i
+};
+
+})
+.filter(function(x){
+
+return x.m.bolge===region;
+
+})
+.sort(function(a,b){
+
+return a.m.ad.localeCompare(
+b.m.ad,
+"tr"
+);
 
 });
+
+
+if(liste.length===0){
+
+return;
 
 }
 
 
-function musteriSil(i){
+var baslik =
+document.createElement("h3");
+
+baslik.className="region";
+
+baslik.textContent =
+"📍 "+region+
+" — "+liste.length+
+" Müşteri";
+
+alan.appendChild(baslik);
+
+
+liste.forEach(function(x){
+
+var d =
+document.createElement("div");
+
+d.className="row";
+
+d.innerHTML =
+"<b>"+x.m.ad+"</b><br>"+
+(x.m.telefon || "")+
+"<br>";
+
+
+var btn =
+document.createElement("button");
+
+btn.className="red";
+
+btn.textContent="🗑️ Sil";
+
+btn.onclick=function(){
 
 if(!confirm("Müşteri silinsin mi?")){
 
@@ -509,44 +757,51 @@ return;
 
 }
 
-musteriler.splice(i,1);
+customers.splice(x.i,1);
 
 localStorage.setItem(
 "musteriler",
-JSON.stringify(musteriler)
+JSON.stringify(customers)
 );
 
-listele();
+listCustomers();
+
+};
+
+d.appendChild(btn);
+
+alan.appendChild(d);
+
+});
+
+});
 
 }
 
 
-/* ÜRÜNLER */
+/* =========================
+   ÜRÜNLER
+========================= */
 
-function urunleriAc(){
+function openProducts(){
 
-gizle();
+hide();
 
-document.getElementById("urunler")
+document.getElementById("products")
 .classList.remove("hidden");
 
-urunleriListele();
+listProducts();
 
 }
 
 
-function urunKaydet(){
+function saveProduct(){
 
-var ad =
-document.getElementById("urunAd").value.trim();
+var name =
+document.getElementById("pName")
+.value.trim();
 
-var maliyet =
-Number(document.getElementById("urunMaliyet").value) || 0;
-
-var satis =
-Number(document.getElementById("urunSatis").value) || 0;
-
-if(!ad){
+if(!name){
 
 alert("Ürün adı girin.");
 
@@ -554,61 +809,114 @@ return;
 
 }
 
-urunKayitlari.push({
 
-ad:ad,
-maliyet:maliyet,
-satis:satis
+products.push({
+
+ad:name,
+
+maliyet:
+Number(document.getElementById("pCost").value)||0,
+
+satis:
+Number(document.getElementById("pSale").value)||0
 
 });
 
+
 localStorage.setItem(
 "urunler",
-JSON.stringify(urunKayitlari)
+JSON.stringify(products)
 );
 
-document.getElementById("urunAd").value="";
-document.getElementById("urunMaliyet").value="";
-document.getElementById("urunSatis").value="";
 
-urunleriListele();
+document.getElementById("pName").value="";
+document.getElementById("pCost").value="";
+document.getElementById("pSale").value="";
+
+listProducts();
 
 }
 
 
-function urunleriListele(){
+function listProducts(){
 
 var alan =
-document.getElementById("urunKayitListesi");
+document.getElementById("productList");
 
 alan.innerHTML="";
 
-if(urunKayitlari.length === 0){
+
+var q =
+(document.getElementById("pSearch").value || "")
+.toLocaleLowerCase("tr");
+
+
+var liste =
+products
+.map(function(u,i){
+
+return {
+u:u,
+i:i
+};
+
+})
+.filter(function(x){
+
+return x.u.ad
+.toLocaleLowerCase("tr")
+.indexOf(q)!==-1;
+
+})
+.sort(function(a,b){
+
+return a.u.ad.localeCompare(
+b.u.ad,
+"tr"
+);
+
+});
+
+
+if(liste.length===0){
 
 alan.innerHTML =
-'<div class="card">Kayıtlı ürün yok.</div>';
+'<div class="card">Ürün bulunamadı.</div>';
 
 return;
 
 }
 
-urunKayitlari.forEach(function(u,i){
 
-alan.innerHTML +=
+liste.forEach(function(x){
 
-'<div class="card">' +
-'<b>'+u.ad+'</b><br>' +
-'Maliyet: '+Number(u.maliyet).toFixed(2)+' ₺<br>' +
-'Satış: '+Number(u.satis).toFixed(2)+' ₺<br>' +
-'<button class="sil" onclick="urunSil('+i+')">🗑️ Ürünü Sil</button>' +
-'</div>';
+var d =
+document.createElement("div");
 
-});
+d.className="card";
 
-}
+d.innerHTML =
+
+"<b>"+x.u.ad+"</b><br>"+
+
+"Maliyet: "+
+Number(x.u.maliyet).toFixed(2)+
+" ₺<br>"+
+
+"Satış: "+
+Number(x.u.satis).toFixed(2)+
+" ₺<br>";
 
 
-function urunSil(i){
+var btn =
+document.createElement("button");
+
+btn.className="red";
+
+btn.textContent =
+"🗑️ Ürünü Sil";
+
+btn.onclick=function(){
 
 if(!confirm("Ürün silinsin mi?")){
 
@@ -616,75 +924,59 @@ return;
 
 }
 
-urunKayitlari.splice(i,1);
+products.splice(x.i,1);
 
 localStorage.setItem(
 "urunler",
-JSON.stringify(urunKayitlari)
+JSON.stringify(products)
 );
 
-urunleriListele();
+listProducts();
 
-}
+};
 
+d.appendChild(btn);
 
-/* SİPARİŞ */
-
-function siparisleriAc(){
-
-gizle();
-
-document.getElementById("siparisler")
-.classList.remove("hidden");
-
-siparisFormSecenekleri();
-
-siparisSepeti=[];
-
-duzenlenenSiparis=null;
-
-siparisFormNormal();
-
-sepetGoster();
-
-siparisListele();
-
-}
-
-
-function siparisFormSecenekleri(){
-
-var m =
-document.getElementById("sipMusteri");
-
-m.innerHTML =
-'<option value="">Müşteri seçin</option>';
-
-musteriler.forEach(function(x){
-
-var o =
-document.createElement("option");
-
-o.value=x.ad;
-o.textContent=x.ad;
-
-m.appendChild(o);
+alan.appendChild(d);
 
 });
 
+}
+
+
+/* =========================
+   SİPARİŞ
+========================= */
+
+function orderOptions(){
+
+fillSelect("oCustomer");
+
 
 var u =
-document.getElementById("sipUrun");
+document.getElementById("oProduct");
 
 u.innerHTML =
 '<option value="">Ürün seçin</option>';
 
-urunKayitlari.forEach(function(x){
+
+products
+.slice()
+.sort(function(a,b){
+
+return a.ad.localeCompare(
+b.ad,
+"tr"
+);
+
+})
+.forEach(function(x){
 
 var o =
 document.createElement("option");
 
 o.value=x.ad;
+
 o.textContent=x.ad;
 
 u.appendChild(o);
@@ -694,35 +986,165 @@ u.appendChild(o);
 
 u.onchange=function(){
 
-var urun =
-urunKayitlari.find(function(a){
+var x =
+products.find(function(p){
 
-return a.ad === u.value;
+return p.ad===u.value;
 
 });
 
-if(urun){
+if(x){
 
-document.getElementById("sipFiyat").value =
-urun.satis;
+document.getElementById("oPrice")
+.value=x.satis;
 
 }
+
+orderBalance();
 
 };
 
 }
 
 
-function sipariseUrunEkle(){
+function openOrders(){
+
+hide();
+
+document.getElementById("orders")
+.classList.remove("hidden");
+
+orderOptions();
+
+basket=[];
+
+editing=null;
+
+normalOrder();
+
+showBasket();
+
+listOrders();
+
+orderBalance();
+
+}
+
+
+function basketTotal(){
+
+var total=0;
+
+
+basket.forEach(function(x){
+
+total +=
+(Number(x.miktar)||0) *
+(Number(x.fiyat)||0);
+
+});
+
 
 var urun =
-document.getElementById("sipUrun").value;
+document.getElementById("oProduct").value;
 
 var miktar =
-Number(document.getElementById("sipMiktar").value);
+Number(document.getElementById("oQty").value)||0;
 
 var fiyat =
-Number(document.getElementById("sipFiyat").value);
+Number(document.getElementById("oPrice").value)||0;
+
+
+if(urun && miktar){
+
+total += miktar*fiyat;
+
+}
+
+
+return total;
+
+}
+
+
+function orderBalance(){
+
+var name =
+document.getElementById("oCustomer").value;
+
+var alan =
+document.getElementById("oBalance");
+
+
+if(!name){
+
+alan.innerHTML =
+"Müşteri seçildiğinde bakiyesi görünür.";
+
+return;
+
+}
+
+
+var mevcut =
+balance(name).total;
+
+
+/* Sipariş düzenleniyorsa eski siparişi
+   mevcut bakiyeden çıkar */
+
+if(
+editing &&
+editing.musteri===name
+){
+
+orders.forEach(function(x){
+
+if(
+x.musteri===editing.musteri &&
+x.tarih===editing.tarih
+){
+
+mevcut -=
+(Number(x.miktar)||0) *
+(Number(x.fiyat)||0);
+
+}
+
+});
+
+}
+
+
+var yeni =
+basketTotal();
+
+
+alan.innerHTML =
+
+"<b>Mevcut Bakiye:</b> "+
+mevcut.toFixed(2)+" ₺"+
+
+"<br><b>Yeni Sipariş:</b> "+
+yeni.toFixed(2)+" ₺"+
+
+"<br><b>Sipariş Sonrası Bakiye:</b> "+
+(mevcut+yeni).toFixed(2)+" ₺";
+
+}
+
+
+function addBasket(){
+
+var urun =
+document.getElementById("oProduct").value;
+
+var miktar =
+Number(document.getElementById("oQty").value);
+
+var fiyat =
+Number(document.getElementById("oPrice").value);
+
 
 if(!urun || !miktar){
 
@@ -732,110 +1154,144 @@ return;
 
 }
 
-var kayit =
-urunKayitlari.find(function(x){
 
-return x.ad === urun;
+var p =
+products.find(function(x){
+
+return x.ad===urun;
 
 });
 
-siparisSepeti.push({
+
+basket.push({
 
 urun:urun,
+
 miktar:miktar,
+
 fiyat:fiyat,
-maliyet:kayit ? Number(kayit.maliyet) : 0
+
+maliyet:
+p ? Number(p.maliyet)||0 : 0
 
 });
 
-document.getElementById("sipUrun").value="";
-document.getElementById("sipMiktar").value="";
-document.getElementById("sipFiyat").value="";
 
-sepetGoster();
+document.getElementById("oProduct").value="";
+document.getElementById("oQty").value="";
+document.getElementById("oPrice").value="";
+
+showBasket();
+
+orderBalance();
 
 }
 
 
-function sepetGoster(){
+function showBasket(){
 
 var alan =
-document.getElementById("siparisSepeti");
+document.getElementById("basket");
 
 alan.innerHTML="";
 
-if(siparisSepeti.length === 0){
 
-return;
+basket.forEach(function(x,i){
 
-}
+var d =
+document.createElement("div");
 
-siparisSepeti.forEach(function(s,i){
+d.className="row";
+
 
 var tutar =
-(Number(s.miktar)||0) *
-(Number(s.fiyat)||0);
+(Number(x.miktar)||0) *
+(Number(x.fiyat)||0);
 
-alan.innerHTML +=
 
-'<div class="musteri">' +
-'📦 <b>'+s.urun+'</b><br>' +
-'Miktar: '+s.miktar+'<br>' +
-'Birim fiyat: '+Number(s.fiyat).toFixed(2)+' ₺<br>' +
-'Toplam: <b>'+tutar.toFixed(2)+' ₺</b><br>' +
-'<button class="duzenle" onclick="sepetUrunDuzenle('+i+')">✏️ Ürünü Düzenle</button>' +
-'<button class="sil" onclick="sepettenSil('+i+')">🗑️ Çıkar</button>' +
-'</div>';
+d.innerHTML =
+
+"📦 <b>"+x.urun+"</b><br>"+
+
+"Miktar: "+x.miktar+"<br>"+
+
+"Birim fiyat: "+
+Number(x.fiyat).toFixed(2)+
+" ₺<br>"+
+
+"Toplam: <b>"+
+tutar.toFixed(2)+
+" ₺</b><br>";
+
+
+var edit =
+document.createElement("button");
+
+edit.className="orange";
+
+edit.textContent =
+"✏️ Ürünü Düzenle";
+
+edit.onclick=function(){
+
+document.getElementById("oProduct").value =
+x.urun;
+
+document.getElementById("oQty").value =
+x.miktar;
+
+document.getElementById("oPrice").value =
+x.fiyat;
+
+basket.splice(i,1);
+
+showBasket();
+
+orderBalance();
+
+};
+
+
+var del =
+document.createElement("button");
+
+del.className="red";
+
+del.textContent =
+"🗑️ Çıkar";
+
+del.onclick=function(){
+
+basket.splice(i,1);
+
+showBasket();
+
+orderBalance();
+
+};
+
+
+d.appendChild(edit);
+
+d.appendChild(del);
+
+alan.appendChild(d);
 
 });
 
 }
 
 
-function sepetUrunDuzenle(i){
+function saveOrder(){
 
-var s =
-siparisSepeti[i];
+var customer =
+document.getElementById("oCustomer").value;
 
-document.getElementById("sipUrun").value =
-s.urun;
-
-document.getElementById("sipMiktar").value =
-s.miktar;
-
-document.getElementById("sipFiyat").value =
-s.fiyat;
-
-siparisSepeti.splice(i,1);
-
-sepetGoster();
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
+var date =
+document.getElementById("oDate").value;
 
 
-function sepettenSil(i){
-
-siparisSepeti.splice(i,1);
-
-sepetGoster();
-
-}
-
-
-function siparisKaydet(){
-
-var musteri =
-document.getElementById("sipMusteri").value;
-
-var tarih =
-document.getElementById("sipTarih").value;
-
-if(!musteri){
+if(!customer){
 
 alert("Müşteri seçin.");
 
@@ -843,7 +1299,8 @@ return;
 
 }
 
-if(!tarih){
+
+if(!date){
 
 alert("Teslim tarihini seçin.");
 
@@ -852,60 +1309,65 @@ return;
 }
 
 
-/* Ürün alanında bekleyen ürün varsa sepete ekle */
+/* Formda bekleyen ürün varsa ekle */
 
 if(
-document.getElementById("sipUrun").value &&
-Number(document.getElementById("sipMiktar").value)
+document.getElementById("oProduct").value &&
+Number(document.getElementById("oQty").value)
 ){
 
 var urun =
-document.getElementById("sipUrun").value;
+document.getElementById("oProduct").value;
 
 var miktar =
-Number(document.getElementById("sipMiktar").value);
+Number(document.getElementById("oQty").value);
 
 var fiyat =
-Number(document.getElementById("sipFiyat").value);
+Number(document.getElementById("oPrice").value);
 
-var kayit =
-urunKayitlari.find(function(x){
+var p =
+products.find(function(x){
 
-return x.ad === urun;
+return x.ad===urun;
 
 });
 
-siparisSepeti.push({
+
+basket.push({
 
 urun:urun,
+
 miktar:miktar,
+
 fiyat:fiyat,
-maliyet:kayit ? Number(kayit.maliyet) : 0
+
+maliyet:
+p ? Number(p.maliyet)||0 : 0
 
 });
 
 }
 
 
-if(siparisSepeti.length === 0){
+if(basket.length===0){
 
-alert("Siparişe en az bir ürün ekleyin.");
+alert("Siparişe ürün ekleyin.");
 
 return;
 
 }
 
 
-/* Düzenleme yapılıyorsa eski siparişi kaldır */
+/* Düzenleme ise eski siparişi sil */
 
-if(duzenlenenSiparis){
+if(editing){
 
-siparisler =
-siparisler.filter(function(s){
+orders =
+orders.filter(function(x){
 
 return !(
-s.musteri === duzenlenenSiparis.musteri &&
-s.tarih === duzenlenenSiparis.tarih
+x.musteri===editing.musteri &&
+x.tarih===editing.tarih
 );
 
 });
@@ -913,18 +1375,21 @@ s.tarih === duzenlenenSiparis.tarih
 }
 
 
-/* Yeni / düzenlenmiş siparişi kaydet */
+basket.forEach(function(x){
 
-siparisSepeti.forEach(function(s){
+orders.push({
 
-siparisler.push({
+musteri:customer,
 
-musteri:musteri,
-urun:s.urun,
-miktar:s.miktar,
-fiyat:s.fiyat,
-maliyet:s.maliyet,
-tarih:tarih
+urun:x.urun,
+
+miktar:x.miktar,
+
+fiyat:x.fiyat,
+
+maliyet:x.maliyet,
+
+tarih:date
 
 });
 
@@ -933,129 +1398,141 @@ tarih:tarih
 
 localStorage.setItem(
 "siparisler",
-JSON.stringify(siparisler)
+JSON.stringify(orders)
 );
 
 
-var duzenlemeYapildi =
-duzenlenenSiparis !== null;
+var wasEditing =
+editing!==null;
 
 
-siparisSepeti=[];
+basket=[];
 
-duzenlenenSiparis=null;
-
-document.getElementById("sipMusteri").value="";
-document.getElementById("sipUrun").value="";
-document.getElementById("sipMiktar").value="";
-document.getElementById("sipFiyat").value="";
-document.getElementById("sipTarih").value="";
-
-siparisFormNormal();
-
-sepetGoster();
-
-siparisListele();
+editing=null;
 
 
-if(duzenlemeYapildi){
+document.getElementById("oCustomer").value="";
+document.getElementById("oProduct").value="";
+document.getElementById("oQty").value="";
+document.getElementById("oPrice").value="";
+document.getElementById("oDate").value="";
 
-alert("Sipariş güncellendi.");
 
-}else{
+normalOrder();
 
-alert("Sipariş kaydedildi.");
+showBasket();
+
+listOrders();
+
+orderBalance();
+
+
+alert(
+wasEditing ?
+"Sipariş güncellendi." :
+"Sipariş kaydedildi."
+);
 
 }
 
-}
 
+function normalOrder(){
 
-function siparisFormNormal(){
+document.getElementById("orderTitle")
+.textContent="📦 Yeni Sipariş";
 
-document.getElementById("siparisFormBaslik")
-.textContent =
-"📦 Yeni Sipariş";
+document.getElementById("orderSave")
+.textContent="💾 Siparişi Kaydet";
 
-document.getElementById("siparisKaydetButon")
-.textContent =
-"💾 Siparişi Kaydet";
-
-document.getElementById("duzenlemeIptalButon")
+document.getElementById("cancelEdit")
 .classList.add("hidden");
 
 }
 
 
-function siparisDuzenle(musteri,tarih){
+function cancelOrderEdit(){
 
-var bulunanlar =
-siparisler.filter(function(s){
+basket=[];
+
+editing=null;
+
+document.getElementById("oCustomer").value="";
+document.getElementById("oProduct").value="";
+document.getElementById("oQty").value="";
+document.getElementById("oPrice").value="";
+document.getElementById("oDate").value="";
+
+normalOrder();
+
+showBasket();
+
+orderBalance();
+
+}
+
+
+function editOrder(name,date){
+
+var xs =
+orders.filter(function(x){
 
 return (
-s.musteri === musteri &&
-s.tarih === tarih
+x.musteri===name &&
+x.tarih===date
 );
 
 });
 
 
-if(bulunanlar.length === 0){
+editing = {
 
-alert("Sipariş bulunamadı.");
+musteri:name,
 
-return;
-
-}
-
-
-duzenlenenSiparis = {
-
-musteri:musteri,
-tarih:tarih
+tarih:date
 
 };
 
 
-siparisSepeti =
-bulunanlar.map(function(s){
+basket =
+xs.map(function(x){
 
 return {
 
-urun:s.urun,
-miktar:Number(s.miktar)||0,
-fiyat:Number(s.fiyat)||0,
-maliyet:Number(s.maliyet)||0
+urun:x.urun,
+
+miktar:Number(x.miktar)||0,
+
+fiyat:Number(x.fiyat)||0,
+
+maliyet:Number(x.maliyet)||0
 
 };
 
 });
 
 
-document.getElementById("sipMusteri").value =
-musteri;
+document.getElementById("oCustomer").value =
+name;
 
-document.getElementById("sipTarih").value =
-tarih;
-
-document.getElementById("sipUrun").value="";
-document.getElementById("sipMiktar").value="";
-document.getElementById("sipFiyat").value="";
+document.getElementById("oDate").value =
+date;
 
 
-document.getElementById("siparisFormBaslik")
+document.getElementById("orderTitle")
 .textContent =
 "✏️ Siparişi Düzenle";
 
-document.getElementById("siparisKaydetButon")
+document.getElementById("orderSave")
 .textContent =
 "💾 Değişiklikleri Kaydet";
 
-document.getElementById("duzenlemeIptalButon")
+document.getElementById("cancelEdit")
 .classList.remove("hidden");
 
 
-sepetGoster();
+showBasket();
+
+orderBalance();
 
 
 window.scrollTo({
@@ -1066,203 +1543,136 @@ behavior:"smooth"
 }
 
 
-function siparisDuzenlemeIptal(){
-
-duzenlenenSiparis=null;
-
-siparisSepeti=[];
-
-document.getElementById("sipMusteri").value="";
-document.getElementById("sipUrun").value="";
-document.getElementById("sipMiktar").value="";
-document.getElementById("sipFiyat").value="";
-document.getElementById("sipTarih").value="";
-
-siparisFormNormal();
-
-sepetGoster();
-
-}
-
-
-function siparisListele(){
+function listOrders(){
 
 var alan =
-document.getElementById("siparisListesi");
+document.getElementById("orderList");
 
 alan.innerHTML="";
 
-if(siparisler.length === 0){
 
-alan.innerHTML="Kayıtlı sipariş yok.";
+if(orders.length===0){
+
+alan.innerHTML =
+"Kayıtlı sipariş yok.";
 
 return;
 
 }
 
 
-var gruplar={};
+var groups={};
 
 
-siparisler.forEach(function(s){
+orders.forEach(function(x){
 
-var anahtar =
-s.musteri+"|||"+s.tarih;
+var key =
+x.musteri+"|||"+x.tarih;
 
-if(!gruplar[anahtar]){
 
-gruplar[anahtar]={
+if(!groups[key]){
 
-musteri:s.musteri,
-tarih:s.tarih,
-urunler:[]
+groups[key] = {
+
+name:x.musteri,
+
+date:x.tarih,
+
+items:[]
 
 };
 
 }
 
-gruplar[anahtar].urunler.push(s);
+
+groups[key].items.push(x);
 
 });
 
 
-var grupListesi =
-Object.keys(gruplar)
-.map(function(anahtar){
+Object.keys(groups)
+.map(function(key){
 
-return gruplar[anahtar];
+return groups[key];
 
-});
+})
+.sort(function(a,b){
 
+return b.date.localeCompare(a.date);
 
-grupListesi.sort(function(a,b){
+})
+.forEach(function(g){
 
-if(a.tarih === b.tarih){
-
-return a.musteri.localeCompare(
-b.musteri,
-"tr"
-);
-
-}
-
-return b.tarih.localeCompare(a.tarih);
-
-});
-
-
-grupListesi.forEach(function(grup){
-
-var toplam=0;
-
-var kart =
+var d =
 document.createElement("div");
 
-kart.className="musteri";
+d.className="row";
+
+d.innerHTML =
+"<b>"+g.name+"</b><br>";
 
 
-var baslik =
-document.createElement("b");
-
-baslik.textContent =
-grup.musteri;
-
-kart.appendChild(baslik);
-
-kart.appendChild(
-document.createElement("br")
-);
+var total=0;
 
 
-grup.urunler.forEach(function(s){
+g.items.forEach(function(x){
 
 var tutar =
-(Number(s.miktar)||0) *
-(Number(s.fiyat)||0);
+(Number(x.miktar)||0) *
+(Number(x.fiyat)||0);
 
-toplam += tutar;
+total += tutar;
 
 
-var urun =
-document.createElement("div");
+d.innerHTML +=
 
-urun.innerHTML =
-'📦 '+s.urun+'<br>'+
-'Miktar: '+s.miktar+'<br>'+
-'Birim Fiyat: '+
-Number(s.fiyat).toFixed(2)+' ₺<br>'+
-'Toplam: <b>'+
-tutar.toFixed(2)+' ₺</b><br><br>';
-
-kart.appendChild(urun);
+"📦 "+x.urun+
+" — "+x.miktar+
+" × "+
+Number(x.fiyat).toFixed(2)+
+" ₺ = <b>"+
+tutar.toFixed(2)+
+" ₺</b><br>";
 
 });
 
 
-var toplamAlan =
-document.createElement("div");
+d.innerHTML +=
 
-toplamAlan.innerHTML =
-'<b>Sipariş Toplamı: '+
-toplam.toFixed(2)+
-' ₺</b><br>📅 '+
-tarihGoster(grup.tarih);
-
-kart.appendChild(toplamAlan);
+"<br><b>Sipariş Toplamı: "+
+total.toFixed(2)+
+" ₺</b><br>📅 "+
+fmt(g.date)+
+"<br>";
 
 
-/* DÜZENLE BUTONU */
-
-var duzenleButon =
+var edit =
 document.createElement("button");
 
-duzenleButon.className="duzenle";
+edit.className="orange";
 
-duzenleButon.textContent =
+edit.textContent =
 "✏️ Siparişi Düzenle";
 
-duzenleButon.onclick=function(){
+edit.onclick=function(){
 
-siparisDuzenle(
-grup.musteri,
-grup.tarih
+editOrder(
+g.name,
+g.date
 );
 
 };
 
-kart.appendChild(duzenleButon);
 
-
-/* SİL BUTONU */
-
-var silButon =
+var del =
 document.createElement("button");
 
-silButon.className="sil";
+del.className="red";
 
-silButon.textContent =
+del.textContent =
 "🗑️ Siparişi Sil";
 
-silButon.onclick=function(){
-
-siparisSil(
-grup.musteri,
-grup.tarih
-);
-
-};
-
-kart.appendChild(silButon);
-
-
-alan.appendChild(kart);
-
-});
-
-}
-
-
-function siparisSil(musteri,tarih){
+del.onclick=function(){
 
 if(!confirm("Bu sipariş silinsin mi?")){
 
@@ -1270,12 +1680,12 @@ return;
 
 }
 
-siparisler =
-siparisler.filter(function(s){
+orders =
+orders.filter(function(x){
 
 return !(
-s.musteri === musteri &&
-s.tarih === tarih
+x.musteri===g.name &&
+x.tarih===g.date
 );
 
 });
@@ -1283,132 +1693,353 @@ s.tarih === tarih
 
 localStorage.setItem(
 "siparisler",
-JSON.stringify(siparisler)
+JSON.stringify(orders)
 );
 
-siparisListele();
-
-}
-
-
-/* TARİH GÖSTER */
-
-function tarihGoster(tarih){
-
-if(!tarih){
-
-return "";
-
-}
-
-var p =
-tarih.split("-");
-
-if(p.length !== 3){
-
-return tarih;
-
-}
-
-return p[2]+"."+p[1]+"."+p[0];
-
-}
-
-
-/* BAKİYE */
-
-function bakiye(ad){
-
-var satis=0;
-var odeme=0;
-
-
-siparisler.forEach(function(s){
-
-if(s.musteri === ad){
-
-satis +=
-(Number(s.miktar)||0) *
-(Number(s.fiyat)||0);
-
-}
-
-});
-
-
-tahsilatlar.forEach(function(t){
-
-if(t.musteri === ad){
-
-odeme +=
-Number(t.tutar)||0;
-
-}
-
-});
-
-
-return {
-
-satis:satis,
-odeme:odeme,
-kalan:satis-odeme
+listOrders();
 
 };
 
+
+d.appendChild(edit);
+
+d.appendChild(del);
+
+alan.appendChild(d);
+
+});
+
 }
 
 
-/* CARİ */
+/* =========================
+   TESLİM EDİLECEKLER
+========================= */
 
-function cariAc(){
+function openDeliveries(){
 
-gizle();
+hide();
 
-document.getElementById("cari")
+document.getElementById("deliveries")
 .classList.remove("hidden");
 
+selectedDelivery="Tümü";
 
-var s =
-document.getElementById("cariMusteri");
+listDeliveries();
 
-s.innerHTML =
-'<option value="">Müşteri seçin</option>';
+}
 
 
-musteriler.forEach(function(m){
+function deliveryRegion(region){
 
-var o =
-document.createElement("option");
+selectedDelivery=region;
 
-o.value=m.ad;
-o.textContent=m.ad;
+listDeliveries();
 
-s.appendChild(o);
+}
+
+
+function listDeliveries(){
+
+var today=ymd();
+
+
+var xs =
+orders.filter(function(x){
+
+if(x.tarih < today){
+
+return false;
+
+}
+
+
+if(selectedDelivery==="Tümü"){
+
+return true;
+
+}
+
+
+var c =
+customers.find(function(m){
+
+return m.ad===x.musteri;
 
 });
 
 
-cariGoster();
+return (
+c &&
+c.bolge===selectedDelivery
+);
+
+});
+
+
+var alan =
+document.getElementById("deliveryList");
+
+alan.innerHTML="";
+
+
+var dates=[];
+
+xs.forEach(function(x){
+
+if(dates.indexOf(x.tarih)===-1){
+
+dates.push(x.tarih);
+
+}
+
+});
+
+dates.sort();
+
+
+var deliveryKeys=[];
+
+xs.forEach(function(x){
+
+var k =
+x.musteri+"|||"+x.tarih;
+
+if(deliveryKeys.indexOf(k)===-1){
+
+deliveryKeys.push(k);
+
+}
+
+});
+
+
+document.getElementById("deliverySummary")
+.innerHTML =
+
+"<br><b>Gösterilen Bölge:</b> "+
+selectedDelivery+
+
+"<br><b>Toplam Teslimat:</b> "+
+deliveryKeys.length;
+
+
+if(xs.length===0){
+
+alan.innerHTML =
+'<div class="card">Bekleyen teslimat yok.</div>';
+
+return;
 
 }
 
 
-function cariGoster(){
+dates.forEach(function(date){
 
-var ad =
-document.getElementById("cariMusteri").value;
+var card =
+document.createElement("div");
 
-var liste =
-document.getElementById("tahsilatListesi");
-
-liste.innerHTML="";
+card.className="card";
 
 
-if(!ad){
+var dateTitle =
+document.createElement("div");
 
-document.getElementById("cariBilgi")
-.innerHTML="Müşteri seçin.";
+dateTitle.className="date";
+
+dateTitle.textContent =
+
+"📅 "+
+fmt(date)+
+(date===today ?
+" — BUGÜN" :
+"");
+
+
+card.appendChild(dateTitle);
+
+
+var regionList =
+selectedDelivery==="Tümü" ?
+regions :
+[selectedDelivery];
+
+
+regionList.forEach(function(region){
+
+var rs =
+xs.filter(function(x){
+
+if(x.tarih!==date){
+
+return false;
+
+}
+
+
+var c =
+customers.find(function(m){
+
+return m.ad===x.musteri;
+
+});
+
+
+return (
+c &&
+c.bolge===region
+);
+
+});
+
+
+if(rs.length===0){
+
+return;
+
+}
+
+
+var h =
+document.createElement("h3");
+
+h.className="region";
+
+h.textContent =
+"📍 "+region;
+
+card.appendChild(h);
+
+
+var groups={};
+
+
+rs.forEach(function(x){
+
+if(!groups[x.musteri]){
+
+groups[x.musteri]=[];
+
+}
+
+groups[x.musteri].push(x);
+
+});
+
+
+Object.keys(groups)
+.sort(function(a,b){
+
+return a.localeCompare(
+b,
+"tr"
+);
+
+})
+.forEach(function(name){
+
+var d =
+document.createElement("div");
+
+d.className="row";
+
+d.innerHTML =
+"<b>"+name+"</b><br>";
+
+
+var total=0;
+
+
+groups[name].forEach(function(x){
+
+var tutar =
+(Number(x.miktar)||0) *
+(Number(x.fiyat)||0);
+
+total += tutar;
+
+
+d.innerHTML +=
+
+"📦 "+x.urun+
+" — "+x.miktar+
+" × "+
+Number(x.fiyat).toFixed(2)+
+" ₺<br>";
+
+});
+
+
+d.innerHTML +=
+
+"<b>Toplam: "+
+total.toFixed(2)+
+" ₺</b>";
+
+
+card.appendChild(d);
+
+});
+
+});
+
+
+alan.appendChild(card);
+
+});
+
+}
+
+
+/* =========================
+   CARİ
+========================= */
+
+function openCurrent(){
+
+hide();
+
+document.getElementById("current")
+.classList.remove("hidden");
+
+fillSelect("curCustomer");
+
+fillSelect("planCustomer");
+
+
+if(
+!document.getElementById("payDate").value
+){
+
+document.getElementById("payDate")
+.value=ymd();
+
+}
+
+
+showCurrent();
+
+listPlans();
+
+}
+
+
+function showCurrent(){
+
+var name =
+document.getElementById("curCustomer").value;
+
+var list =
+document.getElementById("payList");
+
+list.innerHTML="";
+
+
+if(!name){
+
+document.getElementById("curInfo")
+.innerHTML =
+"Müşteri seçin.";
 
 return;
 
@@ -1416,59 +2047,65 @@ return;
 
 
 var b =
-bakiye(ad);
+balance(name);
 
 
-document.getElementById("cariBilgi")
+document.getElementById("curInfo")
 .innerHTML =
 
 "<br><b>Toplam Satış:</b> "+
-b.satis.toFixed(2)+" ₺"+
+b.sales.toFixed(2)+" ₺"+
 
 "<br><b>Toplam Tahsilat:</b> "+
-b.odeme.toFixed(2)+" ₺"+
+b.paid.toFixed(2)+" ₺"+
+
+"<br><b>Manuel Düzeltme:</b> "+
+b.adjust.toFixed(2)+" ₺"+
 
 "<br><b>Kalan Bakiye:</b> "+
-b.kalan.toFixed(2)+" ₺";
+b.total.toFixed(2)+" ₺";
 
 
-tahsilatlar
-.filter(function(t){
+payments
+.filter(function(x){
 
-return t.musteri === ad;
+return x.musteri===name;
 
 })
 .slice()
 .reverse()
-.forEach(function(t){
+.forEach(function(x){
 
-liste.innerHTML +=
+list.innerHTML +=
 
-'<div class="musteri">'+
-tarihGoster(t.tarih)+
+'<div class="row">'+
+fmt(x.tarih)+
 ' — <b>'+
-Number(t.tutar).toFixed(2)+
-' ₺</b>'+
-'</div>';
+Number(x.tutar).toFixed(2)+
+' ₺</b></div>';
 
 });
 
 }
 
 
-function tahsilatKaydet(){
+function savePayment(){
 
-var musteri =
-document.getElementById("cariMusteri").value;
+var customer =
+document.getElementById("curCustomer").value;
 
-var tutar =
-Number(document.getElementById("tahsilatTutar").value);
+var amount =
+Number(document.getElementById("payAmount").value);
 
-var tarih =
-document.getElementById("tahsilatTarih").value;
+var date =
+document.getElementById("payDate").value;
 
 
-if(!musteri || !tutar || !tarih){
+if(
+!customer ||
+!amount ||
+!date
+){
 
 alert("Bilgileri doldurun.");
 
@@ -1477,453 +2114,182 @@ return;
 }
 
 
-tahsilatlar.push({
+payments.push({
 
-musteri:musteri,
-tutar:tutar,
-tarih:tarih
+musteri:customer,
+
+tutar:amount,
+
+tarih:date
 
 });
 
 
 localStorage.setItem(
 "tahsilatlar",
-JSON.stringify(tahsilatlar)
+JSON.stringify(payments)
 );
 
 
-document.getElementById("tahsilatTutar").value="";
+document.getElementById("payAmount").value="";
 
-cariGoster();
-
-}
-
-
-/* BÖLGE */
-
-function bolgeBakiyeleriAc(){
-
-gizle();
-
-document.getElementById("bolgeBakiyeleri")
-.classList.remove("hidden");
+showCurrent();
 
 }
 
 
-function bolgeListele(bolge){
+/* =========================
+   PLANLI TAHSİLAT
+========================= */
 
-var ms =
-musteriler.filter(function(m){
+function savePlan(){
 
-return m.bolge === bolge;
+var customer =
+document.getElementById("planCustomer").value;
+
+var amount =
+Number(document.getElementById("planAmount").value);
+
+var date =
+document.getElementById("planDate").value;
+
+
+if(
+!customer ||
+!amount ||
+!date
+){
+
+alert("Bilgileri doldurun.");
+
+return;
+
+}
+
+
+plans.push({
+
+id:Date.now(),
+
+musteri:customer,
+
+tutar:amount,
+
+tarih:date,
+
+durum:"bekliyor"
 
 });
 
 
-var toplam=0;
+localStorage.setItem(
+"planliTahsilatlar",
+JSON.stringify(plans)
+);
+
+
+document.getElementById("planAmount").value="";
+document.getElementById("planDate").value="";
+
+listPlans();
+
+}
+
+
+function listPlans(){
 
 var alan =
-document.getElementById("bolgeMusteriListesi");
+document.getElementById("planList");
 
 alan.innerHTML="";
 
 
-document.getElementById("bolgeBaslik")
-.textContent =
-bolge+" — "+ms.length+" Müşteri";
+var liste =
+plans
+.filter(function(x){
 
+return x.durum==="bekliyor";
 
-ms.forEach(function(m){
+})
+.sort(function(a,b){
 
-var b =
-bakiye(m.ad).kalan;
-
-toplam += b;
-
-
-alan.innerHTML +=
-
-'<div class="musteri">'+
-'<b>'+m.ad+'</b><br>'+
-'Borç Bakiyesi: <b>'+
-b.toFixed(2)+
-' ₺</b>'+
-'</div>';
+return a.tarih.localeCompare(b.tarih);
 
 });
 
 
-document.getElementById("bolgeToplam")
-.innerHTML =
-
-"<h3>Toplam Bölge Alacağı: "+
-toplam.toFixed(2)+
-" ₺</h3>";
-
-
-if(ms.length === 0){
+if(liste.length===0){
 
 alan.innerHTML =
-"Bu bölgede kayıtlı müşteri yok.";
-
-}
-
-}
-
-
-/* CİRO KÂR */
-
-function ciroKarAc(){
-
-gizle();
-
-document.getElementById("ciroKar")
-.classList.remove("hidden");
-
-
-var ciro=0;
-var maliyet=0;
-
-
-siparisler.forEach(function(s){
-
-ciro +=
-(Number(s.miktar)||0) *
-(Number(s.fiyat)||0);
-
-maliyet +=
-(Number(s.miktar)||0) *
-(Number(s.maliyet)||0);
-
-});
-
-
-document.getElementById("ciroToplam")
-.innerHTML =
-"<h3>Toplam Ciro: "+
-ciro.toFixed(2)+" ₺</h3>";
-
-
-document.getElementById("maliyetToplam")
-.innerHTML =
-"<h3>Toplam Maliyet: "+
-maliyet.toFixed(2)+" ₺</h3>";
-
-
-document.getElementById("karToplam")
-.innerHTML =
-"<h3>Toplam Kâr: "+
-(ciro-maliyet).toFixed(2)+" ₺</h3>";
-
-}
-
-
-/* TESLİM EDİLECEKLER */
-
-function teslimEdileceklerAc(){
-
-gizle();
-
-document.getElementById("teslimEdilecekler")
-.classList.remove("hidden");
-
-
-var bugun =
-new Date();
-
-var yyyy =
-bugun.getFullYear();
-
-var mm =
-String(
-bugun.getMonth()+1
-).padStart(2,"0");
-
-var dd =
-String(
-bugun.getDate()
-).padStart(2,"0");
-
-var bugunTarih =
-yyyy+"-"+mm+"-"+dd;
-
-
-/* Bugün ve sonraki siparişler */
-
-var gelecekSiparisler =
-siparisler.filter(function(s){
-
-return s.tarih >= bugunTarih;
-
-});
-
-
-if(gelecekSiparisler.length === 0){
-
-document.getElementById("teslimOzet")
-.innerHTML =
-"<b>Bekleyen teslimat:</b> 0";
-
-document.getElementById("teslimListe")
-.innerHTML =
-'<div class="card">Bekleyen teslimat yok.</div>';
+"Bekleyen planlı tahsilat yok.";
 
 return;
 
 }
 
 
-/* Kaç farklı müşteri */
+liste.forEach(function(x){
 
-var musteriAnahtarlari=[];
-
-gelecekSiparisler.forEach(function(s){
-
-var anahtar =
-s.musteri+"|||"+s.tarih;
-
-if(
-musteriAnahtarlari.indexOf(anahtar) === -1
-){
-
-musteriAnahtarlari.push(anahtar);
-
-}
-
-});
-
-
-/* Kaç farklı gün */
-
-var tarihler=[];
-
-gelecekSiparisler.forEach(function(s){
-
-if(tarihler.indexOf(s.tarih) === -1){
-
-tarihler.push(s.tarih);
-
-}
-
-});
-
-tarihler.sort();
-
-
-document.getElementById("teslimOzet")
-.innerHTML =
-
-"<b>Toplam teslimat:</b> "+
-musteriAnahtarlari.length+
-
-"<br><b>Teslimat günü:</b> "+
-tarihler.length;
-
-
-var liste =
-document.getElementById("teslimListe");
-
-liste.innerHTML="";
-
-
-var bolgeler = [
-
-"Bandırma",
-"Erdek",
-"Gönen",
-"Manyas",
-"Edincik",
-"Avşa Adası",
-"Ocaklar"
-
-];
-
-
-/* TARİH TARİH GÖSTER */
-
-tarihler.forEach(function(tarih){
-
-var tarihSiparisleri =
-gelecekSiparisler.filter(function(s){
-
-return s.tarih === tarih;
-
-});
-
-
-var tarihKart =
+var d =
 document.createElement("div");
 
-tarihKart.className="card";
+d.className =
+x.tarih < ymd() ?
+"late" :
+"row";
 
 
-var tarihBaslik =
-document.createElement("div");
+d.innerHTML =
 
-tarihBaslik.className =
-"tarihBaslik";
+"<b>"+x.musteri+"</b><br>"+
 
+"📅 "+fmt(x.tarih)+"<br>"+
 
-var tarihMetni =
-tarihGoster(tarih);
+"💵 "+
+Number(x.tutar).toFixed(2)+
+" ₺"+
 
-
-if(tarih === bugunTarih){
-
-tarihMetni += " — BUGÜN";
-
-}
-
-
-tarihBaslik.textContent =
-"📅 "+tarihMetni;
-
-tarihKart.appendChild(tarihBaslik);
+(
+x.tarih < ymd() ?
+"<br><b>⚠️ GECİKTİ</b>" :
+""
+);
 
 
-/* BÖLGELER */
+var ok =
+document.createElement("button");
 
-bolgeler.forEach(function(bolge){
+ok.className="green";
 
-var bolgeSiparisleri =
-tarihSiparisleri.filter(function(s){
-
-var musteri =
-musteriler.find(function(m){
-
-return m.ad === s.musteri;
-
-});
-
-return musteri &&
-musteri.bolge === bolge;
-
-});
+ok.textContent =
+"✅ Tahsil Edildi";
 
 
-if(bolgeSiparisleri.length === 0){
+ok.onclick=function(){
+
+if(!confirm("Tahsil edildi mi?")){
 
 return;
 
 }
 
 
-var bolgeBaslik =
-document.createElement("h3");
+payments.push({
 
-bolgeBaslik.className =
-"bolgeBaslik";
+musteri:x.musteri,
 
-bolgeBaslik.textContent =
-"📍 "+bolge;
+tutar:Number(x.tutar),
 
-tarihKart.appendChild(bolgeBaslik);
-
-
-var gruplar={};
-
-
-bolgeSiparisleri.forEach(function(s){
-
-if(!gruplar[s.musteri]){
-
-gruplar[s.musteri]=[];
-
-}
-
-gruplar[s.musteri].push(s);
+tarih:ymd()
 
 });
 
 
-Object.keys(gruplar)
-.forEach(function(musteriAdi){
-
-var musteriDiv =
-document.createElement("div");
-
-musteriDiv.className =
-"musteri";
+x.durum =
+"tahsil edildi";
 
 
-var bas =
-document.createElement("b");
-
-bas.textContent =
-musteriAdi;
-
-musteriDiv.appendChild(bas);
-
-musteriDiv.appendChild(
-document.createElement("br")
+localStorage.setItem(
+"tahsilatlar",
+JSON.stringify(payments)
 );
-
-
-var toplam=0;
-
-
-gruplar[musteriAdi]
-.forEach(function(s){
-
-var tutar =
-(Number(s.miktar)||0) *
-(Number(s.fiyat)||0);
-
-toplam += tutar;
-
-
-var satir =
-document.createElement("div");
-
-satir.innerHTML =
-
-'📦 '+s.urun+
-' — '+s.miktar+
-' × '+
-Number(s.fiyat).toFixed(2)+
-' ₺';
-
-musteriDiv.appendChild(satir);
-
-});
-
-
-var toplamDiv =
-document.createElement("div");
-
-toplamDiv.innerHTML =
-
-'<b>Toplam: '+
-toplam.toFixed(2)+
-' ₺</b>';
-
-musteriDiv.appendChild(toplamDiv);
-
-
-tarihKart.appendChild(
-musteriDiv
-);
-
-});
-
-});
-
-
-liste.appendChild(
-tarihKart
-);
-
-});
-
-}
-
-
-/* BAŞLANGIÇ */
-
-listele();
-
-</script>
-
-</body>
-</html>
