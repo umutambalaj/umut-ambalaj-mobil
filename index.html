@@ -191,7 +191,8 @@ Bandırma • Erdek • Gönen • Manyas • Edincik • Avşa Adası • Ocakl
 <input id="sipFiyat" type="number" step="0.01" placeholder="Birim fiyat ₺">
 
 <input id="sipTarih" type="date">
-
+<button type="button" onclick="sipariseUrunEkle()">➕ Siparişe Ürün Ekle</button>
+<div id="eklenenUrunler"></div>
 <button onclick="siparisKaydet()">💾 Siparişi Kaydet</button>
 
 </div>
@@ -573,58 +574,79 @@ siparisListele();
 
 function siparisKaydet(){
 
-var musteri = document.getElementById("sipMusteri").value;
+    var musteri = document.getElementById("sipMusteri").value;
+    var tarih = document.getElementById("sipTarih").value;
 
-var urun = document.getElementById("sipUrun").value;
+    if(musteri === "" || tarih === ""){
+        alert("Müşteri ve teslim tarihini seçin.");
+        return;
+    }
 
-var miktar = document.getElementById("sipMiktar").value;
+    if(sipariseEklenenUrunler.length === 0){
+        alert("Önce siparişe ürün ekleyin.");
+        return;
+    }
 
-var fiyat = document.getElementById("sipFiyat").value;
+    sipariseEklenenUrunler.forEach(function(u){
+        siparisler.push({
+            musteri: musteri,
+            urun: u.urun,
+            miktar: u.miktar,
+            fiyat: u.fiyat,
+            maliyet: u.maliyet,
+            tarih: tarih
+        });
+    });
 
-var tarih = document.getElementById("sipTarih").value;
+    localStorage.setItem("siparisler", JSON.stringify(siparisler));
 
-if(musteri === "" || urun === "" || miktar === "" || fiyat === "" || tarih === ""){
+    sipariseEklenenUrunler = [];
+    document.getElementById("eklenenUrunler").innerHTML = "";
+    document.getElementById("sipTarih").value = "";
 
-alert("Sipariş bilgilerini doldurun.");
+    siparisListele();
 
-return;
-
+    alert("Sipariş kaydedildi.");
 }
+var sipariseEklenenUrunler = [];
 
-var urunBilgi = urunKayitlari.find(function(u){
+function sipariseUrunEkle(){
 
-return u.ad === urun;
+    var urun = document.getElementById("sipUrun").value;
+    var miktar = document.getElementById("sipMiktar").value;
+    var fiyat = document.getElementById("sipFiyat").value;
 
-});
+    if(urun === "" || miktar === "" || fiyat === ""){
+        alert("Ürün, miktar ve fiyat bilgilerini doldurun.");
+        return;
+    }
 
-siparisler.push({
+    var urunBilgi = urunKayitlari.find(function(u){
+        return u.ad === urun;
+    });
 
-musteri:musteri,
+    sipariseEklenenUrunler.push({
+        urun: urun,
+        miktar: Number(miktar),
+        fiyat: Number(fiyat),
+        maliyet: urunBilgi ? Number(urunBilgi.maliyet) : 0
+    });
 
-urun:urun,
+    var alan = document.getElementById("eklenenUrunler");
 
-miktar:Number(miktar),
+    alan.innerHTML = "";
 
-fiyat:Number(fiyat),
+    sipariseEklenenUrunler.forEach(function(u){
+        alan.innerHTML +=
+        "<div class='musteri'>📦 <b>" + u.urun + "</b>" +
+        "<br>Miktar: " + u.miktar +
+        " — " + u.fiyat.toFixed(2) + " ₺</div>";
+    });
 
-maliyet:urunBilgi ? Number(urunBilgi.maliyet) : 0,
-
-tarih:tarih
-
-});
-
-localStorage.setItem("siparisler",JSON.stringify(siparisler));
-
-document.getElementById("sipMiktar").value = "";
-
-document.getElementById("sipFiyat").value = "";
-
-document.getElementById("sipTarih").value = "";
-
-siparisListele();
-
+    document.getElementById("sipUrun").value = "";
+    document.getElementById("sipMiktar").value = "";
+    document.getElementById("sipFiyat").value = "";
 }
-
 function siparisListele(){
 
 var alan = document.getElementById("siparisListesi");
