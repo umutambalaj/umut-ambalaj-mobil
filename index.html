@@ -1100,7 +1100,259 @@ liste.appendChild(kart);
 });
 
 }
+/* TÜM GELECEK TESLİMATLAR */
 
+function teslimEdileceklerAc(){
+
+gizle();
+
+document.getElementById("teslimEdilecekler").classList.remove("hidden");
+
+/* BUGÜNÜ YYYY-MM-DD OLARAK HAZIRLA */
+
+var bugun = new Date();
+
+var bugunYil = bugun.getFullYear();
+var bugunAy = String(bugun.getMonth()+1).padStart(2,"0");
+var bugunGun = String(bugun.getDate()).padStart(2,"0");
+
+var bugunTarih = bugunYil+"-"+bugunAy+"-"+bugunGun;
+
+
+/* BUGÜNDEN İTİBAREN TÜM SİPARİŞLER */
+
+var gelecekSiparisler = siparisler.filter(function(s){
+
+return s.tarih >= bugunTarih;
+
+});
+
+
+/* TARİHE GÖRE SIRALA */
+
+gelecekSiparisler.sort(function(a,b){
+
+return a.tarih.localeCompare(b.tarih);
+
+});
+
+
+var liste = document.getElementById("teslimListe");
+
+liste.innerHTML = "";
+
+
+/* HİÇ TESLİMAT YOKSA */
+
+if(gelecekSiparisler.length === 0){
+
+document.getElementById("teslimOzet").innerHTML =
+"<b>Bekleyen teslimat bulunmuyor.</b>";
+
+liste.innerHTML =
+'<div class="card">Bugünden sonraki tarihler için kayıtlı teslimat yok.</div>';
+
+return;
+
+}
+
+
+/* GENEL TOPLAM */
+
+var genelToplam = 0;
+
+gelecekSiparisler.forEach(function(s){
+
+genelToplam +=
+(Number(s.miktar) || 0) *
+(Number(s.fiyat) || 0);
+
+});
+
+
+/* KAÇ FARKLI TARİH VAR */
+
+var tarihler = [];
+
+gelecekSiparisler.forEach(function(s){
+
+if(tarihler.indexOf(s.tarih) === -1){
+
+tarihler.push(s.tarih);
+
+}
+
+});
+
+
+document.getElementById("teslimOzet").innerHTML =
+
+"<b>Bekleyen Teslimat:</b> "+gelecekSiparisler.length+
+
+"<br><b>Teslimat Günü:</b> "+tarihler.length+
+
+"<br><b>Genel Toplam:</b> "+genelToplam.toFixed(2)+" ₺";
+
+
+var bolgeler = [
+"Bandırma",
+"Erdek",
+"Gönen",
+"Manyas",
+"Edincik",
+"Avşa Adası",
+"Ocaklar"
+];
+
+
+/* HER TARİHİ AYRI GÖSTER */
+
+tarihler.forEach(function(tarih){
+
+var parcalar = tarih.split("-");
+
+var tarihYazi =
+parcalar[2]+"."+parcalar[1]+"."+parcalar[0];
+
+
+var tarihSiparisleri = gelecekSiparisler.filter(function(s){
+
+return s.tarih === tarih;
+
+});
+
+
+/* TARİH BAŞLIĞI */
+
+var tarihKart = document.createElement("div");
+
+tarihKart.className = "card";
+
+tarihKart.style.marginTop = "22px";
+
+tarihKart.style.background = "#e3f2fd";
+
+tarihKart.innerHTML =
+
+'<div style="font-size:23px;font-weight:bold;">'+
+'📅 '+tarihYazi+
+'</div>'+
+'<div style="margin-top:7px;">'+
+'Toplam Teslimat: <b>'+tarihSiparisleri.length+'</b>'+
+'</div>';
+
+liste.appendChild(tarihKart);
+
+
+/* O TARİHTEKİ BÖLGELER */
+
+bolgeler.forEach(function(bolge){
+
+var bolgeSiparisleri = tarihSiparisleri.filter(function(s){
+
+var musteri = musteriler.find(function(m){
+
+return m.ad === s.musteri;
+
+});
+
+return musteri && musteri.bolge === bolge;
+
+});
+
+
+if(bolgeSiparisleri.length === 0){
+
+return;
+
+}
+
+
+var bolgeToplam = 0;
+
+
+var kart = document.createElement("div");
+
+kart.className = "bolge-kart";
+
+
+var baslik = document.createElement("div");
+
+baslik.className = "bolge-baslik";
+
+baslik.textContent =
+
+"📍 "+bolge.toUpperCase()+
+" — "+bolgeSiparisleri.length+
+" Teslimat";
+
+
+kart.appendChild(baslik);
+
+
+var icerik = document.createElement("div");
+
+icerik.className = "bolge-icerik";
+
+
+bolgeSiparisleri.forEach(function(s){
+
+var tutar =
+
+(Number(s.miktar) || 0) *
+(Number(s.fiyat) || 0);
+
+bolgeToplam += tutar;
+
+
+var siparis = document.createElement("div");
+
+siparis.className = "musteri";
+
+siparis.innerHTML =
+
+'<b style="font-size:19px">'+s.musteri+'</b><br>'+
+
+'📦 '+s.urun+'<br>'+
+
+'Miktar: <b>'+s.miktar+'</b><br>'+
+
+'Birim Fiyat: '+Number(s.fiyat).toFixed(2)+' ₺<br>'+
+
+'Toplam: <b>'+tutar.toFixed(2)+' ₺</b>';
+
+
+icerik.appendChild(siparis);
+
+});
+
+
+var toplamAlan = document.createElement("div");
+
+toplamAlan.style.paddingTop = "15px";
+
+toplamAlan.style.fontSize = "18px";
+
+toplamAlan.style.fontWeight = "bold";
+
+toplamAlan.textContent =
+
+bolge+" Toplamı: "+
+bolgeToplam.toFixed(2)+
+" ₺";
+
+
+icerik.appendChild(toplamAlan);
+
+kart.appendChild(icerik);
+
+liste.appendChild(kart);
+
+});
+
+});
+
+}
 
 /* CİRO VE KÂR */
 
