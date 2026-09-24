@@ -5,9 +5,20 @@
 <title>Umut Ambalaj</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f5f7;color:#17202a}header{background:#17324d;color:#fff;padding:18px 14px;text-align:center;font-size:22px;font-weight:700}.wrap{max-width:760px;margin:auto;padding:12px}.nav{display:grid;grid-template-columns:1fr 1fr;gap:9px}button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}.nav button,.btn{border:0;border-radius:10px;padding:13px 10px;font-weight:700;font-size:15px;background:#fff;box-shadow:0 1px 5px #ccd2d8;color:#17324d}.btn.primary{background:#17324d;color:#fff}.btn.red{background:#b3261e;color:#fff}.btn.green{background:#18794e;color:#fff}.btn.small{padding:8px;font-size:13px}.page{display:none}.card{background:#fff;border-radius:12px;padding:13px;margin:10px 0;box-shadow:0 1px 5px #d8dde2}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}input,select{width:100%;padding:11px;border:1px solid #cbd2d9;border-radius:8px;font-size:16px;margin:5px 0 9px;background:#fff}label{font-size:13px;font-weight:700;color:#46515c}.title{font-size:20px;font-weight:700;margin:5px 0 12px}.muted{color:#66727e;font-size:13px}.money{font-weight:700}.item{border-top:1px solid #e4e8eb;padding:10px 0}.item:first-child{border-top:0}.right{text-align:right}.pill{display:inline-block;padding:5px 8px;border-radius:20px;background:#edf1f4;font-size:12px;margin:2px}.filters{display:flex;gap:6px;overflow:auto;padding-bottom:5px}.filters button{white-space:nowrap}.active{background:#17324d!important;color:#fff!important}.danger{color:#b3261e}.ok{color:#18794e}.warn{color:#9a6700}.summary{font-size:17px;line-height:1.8}.back{margin-bottom:8px}@media(max-width:480px){.three{grid-template-columns:1fr}.row{grid-template-columns:1fr}.nav{grid-template-columns:1fr 1fr}}
+.loginScreen{position:fixed;inset:0;background:#f3f5f7;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}.loginBox{width:100%;max-width:380px;background:#fff;border-radius:16px;padding:22px;box-shadow:0 3px 18px #cbd2d9}.loginBox h2{text-align:center;color:#17324d;margin:0 0 18px}.userBar{display:flex;justify-content:space-between;align-items:center;background:#e9eef3;padding:8px 12px;border-radius:9px;margin-bottom:10px;font-size:13px}.logoutBtn{border:0;background:#b3261e;color:#fff;border-radius:7px;padding:7px 9px;font-weight:700}
 </style>
 </head><body>
-<header>UMUT AMBALAJ</header><div class="wrap">
+<div id="loginScreen" class="loginScreen">
+ <div class="loginBox">
+  <h2>UMUT AMBALAJ</h2>
+  <label>E-posta</label><input id="loginEmail" type="email" autocomplete="username">
+  <label>Şifre</label><input id="loginPassword" type="password" autocomplete="current-password">
+  <button id="loginBtn" class="btn primary" style="width:100%">Giriş Yap</button>
+  <div id="loginMsg" class="muted" style="margin-top:12px;text-align:center"></div>
+ </div>
+</div>
+
+<header>UMUT AMBALAJ</header><div class="wrap"><div id="userBar" class="userBar" style="display:none"><span id="activeUser"></span><button id="logoutBtn" class="logoutBtn">Çıkış</button></div>
 <div id="home" class="page">
  <div class="nav">
   <button onclick="openDeliveries()">&#128666; Teslim Edilecekler</button><button onclick="openCustomers()">&#128101; M&#252;&#351;teriler</button>
@@ -36,9 +47,17 @@ var siparisSepeti=[],duzenlenenSiparis=null,deliveryRegion='T\u00fcm B\u00f6lgel
 function E(id){return document.getElementById(id)}
 var SUPA_URL='https://llwvqmppcgqnsdhfnwpv.supabase.co/rest/v1';
 var SUPA_KEY='sb_publishable_qNblclW696Ys8YTfsIDclQ_z7J5eq3C';
-var cloudReady=false,syncTimer=null;
+var cloudReady=false,syncTimer=null,accessToken='';
+var AUTH_URL='https://llwvqmppcgqnsdhfnwpv.supabase.co/auth/v1';
+function authHeaders(){return {'apikey':SUPA_KEY,'Authorization':'Bearer '+(accessToken||SUPA_KEY),'Content-Type':'application/json'}}
+function showLogin(msg){E('loginScreen').style.display='flex';E('userBar').style.display='none';if(msg)E('loginMsg').textContent=msg}
+function showApp(email){E('loginScreen').style.display='none';E('userBar').style.display='flex';E('activeUser').textContent='👤 '+email}
+function saveSession(d){if(d&&d.access_token){accessToken=d.access_token;localStorage.setItem('umutAuthSession',JSON.stringify(d));return true}return false}
+function login(){var email=E('loginEmail').value.trim(),password=E('loginPassword').value;if(!email||!password){E('loginMsg').textContent='E-posta ve şifreyi gir.';return}E('loginBtn').disabled=true;E('loginMsg').textContent='Giriş yapılıyor...';fetch(AUTH_URL+'/token?grant_type=password',{method:'POST',headers:{'apikey':SUPA_KEY,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:password})}).then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.error_description||d.msg||d.message||'Giriş başarısız');return d})}).then(function(d){saveSession(d);showApp(d.user&&d.user.email?d.user.email:email);startCloud()}).catch(function(e){E('loginMsg').textContent='Giriş başarısız: '+e.message}).then(function(){E('loginBtn').disabled=false})}
+function logout(){accessToken='';localStorage.removeItem('umutAuthSession');showLogin('Çıkış yapıldı.');}
+function restoreSession(){try{var d=JSON.parse(localStorage.getItem('umutAuthSession')||'null');if(d&&d.access_token&&d.user&&d.user.email){accessToken=d.access_token;showApp(d.user.email);return true}}catch(e){}return false}
 function save(k,v){localStorage.setItem(k,JSON.stringify(v));if(cloudReady){clearTimeout(syncTimer);syncTimer=setTimeout(syncAllToCloud,350)}}
-function api(path,opt){opt=opt||{};opt.headers=opt.headers||{};opt.headers.apikey=SUPA_KEY;opt.headers.Authorization='Bearer '+SUPA_KEY;if(opt.body){opt.headers['Content-Type']='application/json';opt.headers.Prefer='return=minimal'}return fetch(SUPA_URL+path,opt).then(function(r){if(!r.ok)return r.text().then(function(t){throw new Error(t||('HTTP '+r.status))});return r.status===204?null:r.text().then(function(t){return t?JSON.parse(t):null})})}
+function api(path,opt){opt=opt||{};opt.headers=opt.headers||{};opt.headers.apikey=SUPA_KEY;opt.headers.Authorization='Bearer '+(accessToken||SUPA_KEY);if(opt.body){opt.headers['Content-Type']='application/json';opt.headers.Prefer='return=minimal'}return fetch(SUPA_URL+path,opt).then(function(r){if(!r.ok)return r.text().then(function(t){throw new Error(t||('HTTP '+r.status))});return r.status===204?null:r.text().then(function(t){return t?JSON.parse(t):null})})}
 function rowsFor(k){var a=[],i,x;if(k==='musteriler'){for(i=0;i<musteriler.length;i++)a.push({ad:musteriler[i].ad,bolge:musteriler[i].bolge||''})}
 else if(k==='urunler'){for(i=0;i<urunKayitlari.length;i++)a.push({ad:urunKayitlari[i].ad,birim:urunKayitlari[i].birim||'Adet',maliyet:n(urunKayitlari[i].maliyet),satis:n(urunKayitlari[i].satis)})}
 else if(k==='siparisler'){for(i=0;i<siparisler.length;i++){x=siparisler[i];a.push({musteri:x.musteri,tarih:x.tarih,urun:x.urun||'',aciklama:x.not||'',birim:x.birim||'Adet',adet:n(x.adet),fiyat:n(x.fiyat),maliyet:n(x.maliyet),teslim_edildi:!!x.teslimEdildi,teslim_tarihi:x.teslimTarihi?x.teslimTarihi+'T12:00:00Z':null,gecmisten_silindi:!!x.teslimGecmisSilindi})}}
@@ -145,10 +164,15 @@ function renderRegions(){var arr=musteriler.filter(function(c){return selectedRe
 function balanceAction(name){var sec=prompt(name+'\n1 = Bor\u00e7 Ekle\n2 = Bor\u00e7 D\u00fc\u015f\n3 = Bakiyeyi Elle Belirle');if(sec!=='1'&&sec!=='2'&&sec!=='3')return;var val=n(prompt(sec==='3'?'Yeni bakiye tutar\u0131:':'Tutar:'));if(val<0)return alert('Tutar negatif olamaz.');var current=balance(name),delta=sec==='1'?val:(sec==='2'?-val:val-current),type=sec==='1'?'Bor\u00e7 Ekle':(sec==='2'?'Bor\u00e7 D\u00fc\u015f':'Bakiyeyi Elle Belirle'),note=prompt('Not (iste\u011fe ba\u011fl\u0131):')||'';bakiyeDuzenlemeleri.push({musteri:name,delta:delta,islem:type,hedef:sec==='3'?val:null,not:note,tarih:today(),zaman:new Date().toLocaleString('tr-TR')});save('bakiyeDuzenlemeleri',bakiyeDuzenlemeleri);renderRegions()}
 function renderAdjustmentHistory(){var a=bakiyeDuzenlemeleri.slice().reverse(),h='';for(var i=0;i<a.length;i++){var x=a[i];if(selectedRegion!=='T\u00fcm B\u00f6lgeler'&&customerRegion(x.musteri)!==selectedRegion)continue;h+='<div class="card"><b>'+esc(x.musteri)+'</b> \u00b7 '+esc(x.islem||'Bakiye \u0130\u015flemi')+'<div>'+((n(x.delta)>=0)?'+':'')+money(x.delta)+' \u00b7 '+esc(x.zaman||dateText(x.tarih))+'</div>'+(x.not?'<div class="muted">'+esc(x.not)+'</div>':'')+'</div>'}E('adjustHistory').innerHTML=h||'<div class="card muted">\u0130\u015flem ge\u00e7mi\u015fi yok.</div>'}
 fillRegions();fillCustomers();fillProducts();E('oDate').value=today();E('payDate').value=today();E('planDate').value=today();E('profitDate').value=today();show('home');
-var localCount=musteriler.length+urunKayitlari.length+siparisler.length+tahsilatlar.length+planliTahsilatlar.length+bakiyeDuzenlemeleri.length;
-var migrated=localStorage.getItem('umutCloudMigrated')==='1';
-if(localCount>0&&!migrated){cloudReady=false;}
-else{cloudLoad().then(function(){fillRegions();fillCustomers();fillProducts();listCustomers();listProducts();listOrders();renderCurrent();renderPlans();renderProfit();if(E('deliveries').style.display!=='none')renderDeliveries();if(E('cloudUploadBtn')){E('cloudUploadBtn').textContent='鉁� Bulut Aktif';E('cloudUploadBtn').disabled=true;}});}
+function startCloud(){
+ var localCount=musteriler.length+urunKayitlari.length+siparisler.length+tahsilatlar.length+planliTahsilatlar.length+bakiyeDuzenlemeleri.length;
+ var migrated=localStorage.getItem('umutCloudMigrated')==='1';
+ if(localCount>0&&!migrated){cloudReady=false;}
+ else{cloudLoad().then(function(){fillRegions();fillCustomers();fillProducts();listCustomers();listProducts();listOrders();renderCurrent();renderPlans();renderProfit();if(E('deliveries').style.display!=='none')renderDeliveries();if(E('cloudUploadBtn')){E('cloudUploadBtn').textContent='☁️ Bulut Aktif';E('cloudUploadBtn').disabled=true;}});}
+}
+E('loginBtn').onclick=login;E('logoutBtn').onclick=logout;E('loginPassword').addEventListener('keydown',function(e){if(e.key==='Enter')login()});
+if(restoreSession())startCloud();else showLogin('Umut veya Turgay hesabıyla giriş yap.');
+
 
 })();
 </script></body></html>
