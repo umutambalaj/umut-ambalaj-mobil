@@ -47,21 +47,36 @@ else if(k==='planli_tahsilatlar'){for(i=0;i<planliTahsilatlar.length;i++){x=plan
 else if(k==='bakiye_duzenlemeleri'){for(i=0;i<bakiyeDuzenlemeleri.length;i++){x=bakiyeDuzenlemeleri[i];a.push({musteri:x.musteri,tutar:n(x.delta),aciklama:(x.islem||'Bakiye \u0130\u015flemi')+(x.not?' - '+x.not:''),tarih:x.tarih||today()})}}return a}
 function replaceTable(table,rows){return api('/'+table+'?id=gt.0',{method:'DELETE'}).then(function(){if(!rows.length)return null;return api('/'+table,{method:'POST',body:JSON.stringify(rows)})})}
 function syncAllToCloud(){var jobs=[['musteriler','musteriler'],['urunler','urunler'],['siparisler','siparisler'],['tahsilatlar','tahsilatlar'],['planli_tahsilatlar','planli_tahsilatlar'],['bakiye_duzenlemeleri','bakiye_duzenlemeleri']];var chain=Promise.resolve();for(var i=0;i<jobs.length;i++)(function(j){chain=chain.then(function(){return replaceTable(j[1],rowsFor(j[0]))})})(jobs[i]);return chain.catch(function(e){console.error('Supabase senkronizasyon hatas\u0131',e)})}
+function strictReplaceTable(table,rows){
+ return api('/'+table+'?id=gt.0',{method:'DELETE'}).catch(function(e){throw new Error(table+' / temizleme: '+e.message)}).then(function(){
+  if(!rows.length)return null;
+  return api('/'+table,{method:'POST',body:JSON.stringify(rows)}).catch(function(e){throw new Error(table+' / kaydetme: '+e.message)});
+ });
+}
+function strictSyncAllToCloud(){
+ var jobs=[['musteriler','musteriler'],['urunler','urunler'],['siparisler','siparisler'],['tahsilatlar','tahsilatlar'],['planli_tahsilatlar','planli_tahsilatlar'],['bakiye_duzenlemeleri','bakiye_duzenlemeleri']];
+ var chain=Promise.resolve();
+ for(var i=0;i<jobs.length;i++)(function(j){chain=chain.then(function(){return strictReplaceTable(j[1],rowsFor(j[0]))})})(jobs[i]);
+ return chain;
+}
 window.uploadLocalToCloud=function(){
  var total=musteriler.length+urunKayitlari.length+siparisler.length+tahsilatlar.length+planliTahsilatlar.length+bakiyeDuzenlemeleri.length;
- if(!total)return alert('Telefonda aktar谋lacak kay谋t bulunamad谋.');
- if(!confirm('Telefondaki '+total+' kay谋t Supabase bulutuna aktar谋lacak. Devam edilsin mi?'))return;
- var b=E('cloudUploadBtn');if(b){b.disabled=true;b.textContent='鈽侊笍 Aktar谋l谋yor...'}
- syncAllToCloud().then(function(){
+ if(!total)return alert('Telefonda aktar\u0131lacak kay\u0131t bulunamad\u0131.');
+ if(!confirm('Telefondaki '+total+' kay\u0131t Supabase bulutuna aktar\u0131lacak. Devam edilsin mi?'))return;
+ var b=E('cloudUploadBtn');if(b){b.disabled=true;b.textContent='\u2601\ufe0f Aktar\u0131l\u0131yor...'}
+ strictSyncAllToCloud().then(function(){
   return Promise.all([getTable('musteriler'),getTable('urunler'),getTable('siparisler'),getTable('tahsilatlar'),getTable('planli_tahsilatlar'),getTable('bakiye_duzenlemeleri')]);
  }).then(function(d){
   var expected=[musteriler.length,urunKayitlari.length,siparisler.length,tahsilatlar.length,planliTahsilatlar.length,bakiyeDuzenlemeleri.length];
-  var ok=true;for(var i=0;i<d.length;i++)if((d[i]||[]).length!==expected[i])ok=false;
-  if(!ok)throw new Error('Kay谋t say谋lar谋 do臒rulanamad谋.');
+  var names=['musteriler','urunler','siparisler','tahsilatlar','planli_tahsilatlar','bakiye_duzenlemeleri'];
+  for(var i=0;i<d.length;i++)if((d[i]||[]).length!==expected[i])throw new Error(names[i]+' / do\u011frulama: beklenen '+expected[i]+', bulutta '+(d[i]||[]).length);
   localStorage.setItem('umutCloudMigrated','1');cloudReady=true;
-  if(b){b.textContent='鉁� Buluta Aktar谋ld谋';b.disabled=true}
-  alert('TAMAMLANDI 鉁匼n\nT眉m kay谋tlar Supabase bulutuna aktar谋ld谋 ve do臒ruland谋.');
- }).catch(function(e){console.error(e);if(b){b.disabled=false;b.textContent='鈽侊笍 Buluta Aktar'}alert('Aktar谋m tamamlanamad谋. Mevcut telefon kay谋tlar谋n silinmedi. Tekrar denemeden 枚nce bana ekran g枚r眉nt眉s眉n眉 g枚nder.');});
+  if(b){b.textContent='\u2705 Buluta Aktar\u0131ld\u0131';b.disabled=true}
+  alert('TAMAMLANDI \u2705\n\nT\u00fcm kay\u0131tlar Supabase bulutuna aktar\u0131ld\u0131 ve do\u011fruland\u0131.');
+ }).catch(function(e){
+  console.error(e);if(b){b.disabled=false;b.textContent='\u2601\ufe0f Buluta Aktar'}
+  alert('AKTARIM HATASI\n\n'+e.message+'\n\nTelefon kay\u0131tlar\u0131 silinmedi. Bu mesaj\u0131n ekran g\u00f6r\u00fcnt\u00fcs\u00fcn\u00fc g\u00f6nder.');
+ });
 };
 function getTable(t){return api('/'+t+'?select=*&order=id.asc')}
 function cloudLoad(){return Promise.all([getTable('musteriler'),getTable('urunler'),getTable('siparisler'),getTable('tahsilatlar'),getTable('planli_tahsilatlar'),getTable('bakiye_duzenlemeleri')]).then(function(d){var count=0,i,x;for(i=0;i<d.length;i++)count+=(d[i]||[]).length;if(!count){cloudReady=true;return syncAllToCloud()}musteriler=(d[0]||[]).map(function(x){return{ad:x.ad,bolge:x.bolge||''}});urunKayitlari=(d[1]||[]).map(function(x){return{ad:x.ad,birim:x.birim||'Adet',maliyet:n(x.maliyet),satis:n(x.satis)}});siparisler=(d[2]||[]).map(function(x){return{musteri:x.musteri,tarih:x.tarih,urun:x.urun,not:x.aciklama||'',birim:x.birim||'Adet',adet:n(x.adet),fiyat:n(x.fiyat),maliyet:n(x.maliyet),diger:!!x.aciklama,teslimEdildi:!!x.teslim_edildi,teslimTarihi:x.teslim_tarihi?String(x.teslim_tarihi).slice(0,10):null,teslimGecmisSilindi:!!x.gecmisten_silindi}});tahsilatlar=(d[3]||[]).map(function(x){return{musteri:x.musteri,tutar:n(x.tutar),tarih:x.tarih}});planliTahsilatlar=(d[4]||[]).map(function(x){return{id:'db_'+x.id,musteri:x.musteri,tutar:n(x.tutar),tarih:x.tarih,tahsilEdildi:x.durum==='tahsil_edildi'}});bakiyeDuzenlemeleri=(d[5]||[]).map(function(x){return{musteri:x.musteri,delta:n(x.tutar),islem:x.aciklama||'Bakiye \u0130\u015flemi',not:'',tarih:x.tarih}});localStorage.setItem('musteriler',JSON.stringify(musteriler));localStorage.setItem('urunler',JSON.stringify(urunKayitlari));localStorage.setItem('siparisler',JSON.stringify(siparisler));localStorage.setItem('tahsilatlar',JSON.stringify(tahsilatlar));localStorage.setItem('planliTahsilatlar',JSON.stringify(planliTahsilatlar));localStorage.setItem('bakiyeDuzenlemeleri',JSON.stringify(bakiyeDuzenlemeleri));cloudReady=true}).catch(function(e){console.error('Supabase ba\u011flant\u0131s\u0131 kurulamad\u0131',e);cloudReady=false})}
