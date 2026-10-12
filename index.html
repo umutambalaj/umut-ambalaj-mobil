@@ -278,6 +278,9 @@ if(restoreSession())startCloud();else showLogin('Umut veya Turgay hesabıyla gir
   };
   document.body.appendChild(btn);
 })();
-
+syncAllToCloud = function(){
+  return Promise.reject(new Error('Güvenlik için otomatik bulut eşitleme durduruldu.'));
+};
+strictSyncAllToCloud = syncAllToCloud;
 })();
 </script></body></html>
