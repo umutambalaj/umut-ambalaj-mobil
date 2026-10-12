@@ -258,6 +258,26 @@ function startCloud(){
 E('loginBtn').onclick=login;E('logoutBtn').onclick=logout;E('loginPassword').addEventListener('keydown',function(e){if(e.key==='Enter')login()});
 if(restoreSession())startCloud();else showLogin('Umut veya Turgay hesabıyla giriş yap.');
 
+(function(){
+  var btn=document.createElement('button');
+  btn.textContent='💾 Yedek İndir';
+  btn.style.cssText='position:fixed;bottom:18px;right:18px;z-index:9999;background:#176b48;color:white;border:0;border-radius:12px;padding:14px;font-size:16px';
+  btn.onclick=function(){
+    var keys=['musteriler','urunler','siparisler','tahsilatlar','planliTahsilatlar','bakiyeDuzenlemeleri'];
+    var data={yedek_tarihi:new Date().toISOString()};
+    keys.forEach(function(k){data[k]=JSON.parse(localStorage.getItem(k)||'[]')});
+    var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='umut-ambalaj-yedek-'+new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function(){URL.revokeObjectURL(url)},1000);
+  };
+  document.body.appendChild(btn);
+})();
 
 })();
 </script></body></html>
