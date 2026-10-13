@@ -283,9 +283,28 @@ E('loginBtn').onclick=login;E('logoutBtn').onclick=logout;E('loginPassword').add
 
 function handlePasswordRecovery(){
  var hash=new URLSearchParams(location.hash.replace(/^#/,''));
- var token=hash.get('access_token'),type=hash.get('type');
- if(type!=='recovery'||!token)return false;
- E('loginScreen').style.display='none';E('recoveryScreen').style.display='flex';
+ var query=new URLSearchParams(location.search);
+ var token=hash.get('access_token');
+ var type=hash.get('type')||query.get('type');
+ var error=hash.get('error_description')||query.get('error_description')||hash.get('error')||query.get('error');
+ var recovery=type==='recovery'||!!token||!!error||!!query.get('code');
+ if(!recovery)return false;
+ E('loginScreen').style.display='none';
+ E('recoveryScreen').style.display='flex';
+ if(error){
+  E('recoveryMsg').textContent='Bağlantı geçersiz veya süresi dolmuş: '+error+'. Yeni şifre sıfırlama e-postası iste.';
+  E('saveNewPassword').disabled=true;
+  return true;
+ }
+ if(!token){
+  E('recoveryMsg').textContent='Bu bağlantıdan şifre yenileme oturumu alınamadı. Yeni sıfırlama e-postası iste.';
+  E('saveNewPassword').disabled=true;
+  return true;
+ }
+ // Supabase doğrulaması ile gelen erişim belirtecinin gerçekten geçerli olduğunu doğrula.
+ fetch(AUTH_URL+'/user',{headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+token}})
+  .then(function(r){if(!r.ok)throw new Error('Bağlantı geçersiz veya süresi dolmuş.');})
+  .catch(function(e){E('recoveryMsg').textContent=e.message+' Yeni sıfırlama e-postası iste.';E('saveNewPassword').disabled=true;});
  E('saveNewPassword').onclick=function(){
   var p=E('newPassword').value,p2=E('newPassword2').value;
   if(p.length<6)return E('recoveryMsg').textContent='Şifre en az 6 karakter olmalı.';
@@ -293,7 +312,7 @@ function handlePasswordRecovery(){
   E('saveNewPassword').disabled=true;E('recoveryMsg').textContent='Kaydediliyor...';
   fetch(AUTH_URL+'/user',{method:'PUT',headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({password:p})})
    .then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.msg||d.message||'Şifre değiştirilemedi');return d})})
-   .then(function(){history.replaceState(null,'',location.pathname+location.search);localStorage.removeItem('umutAuthSession');accessToken='';activeEmail='';E('recoveryScreen').style.display='none';showLogin('Şifre değiştirildi. Yeni şifrenle giriş yap.');})
+   .then(function(){history.replaceState(null,'',location.pathname);localStorage.removeItem('umutAuthSession');accessToken='';activeEmail='';E('recoveryScreen').style.display='none';showLogin('Şifre değiştirildi. Yeni şifrenle giriş yap.');})
    .catch(function(e){E('recoveryMsg').textContent='Hata: '+e.message;E('saveNewPassword').disabled=false;});
  };
  return true;
