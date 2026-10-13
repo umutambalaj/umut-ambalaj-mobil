@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Umut Ambalaj</title>
+ <meta name="theme-color" content="#17324d">
+<link rel="manifest" href="./manifest.webmanifest">
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f3f5f7;color:#17202a}header{background:#17324d;color:#fff;padding:18px 14px;text-align:center;font-size:22px;font-weight:700}.wrap{max-width:760px;margin:auto;padding:12px}.nav{display:grid;grid-template-columns:1fr 1fr;gap:9px}button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}.nav button,.btn{border:0;border-radius:10px;padding:13px 10px;font-weight:700;font-size:15px;background:#fff;box-shadow:0 1px 5px #ccd2d8;color:#17324d}.btn.primary{background:#17324d;color:#fff}.btn.red{background:#b3261e;color:#fff}.btn.green{background:#18794e;color:#fff}.btn.small{padding:8px;font-size:13px}.page{display:none}.card{background:#fff;border-radius:12px;padding:13px;margin:10px 0;box-shadow:0 1px 5px #d8dde2}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}input,select{width:100%;padding:11px;border:1px solid #cbd2d9;border-radius:8px;font-size:16px;margin:5px 0 9px;background:#fff}label{font-size:13px;font-weight:700;color:#46515c}.title{font-size:20px;font-weight:700;margin:5px 0 12px}.muted{color:#66727e;font-size:13px}.money{font-weight:700}.item{border-top:1px solid #e4e8eb;padding:10px 0}.item:first-child{border-top:0}.right{text-align:right}.pill{display:inline-block;padding:5px 8px;border-radius:20px;background:#edf1f4;font-size:12px;margin:2px}.filters{display:flex;gap:6px;overflow:auto;padding-bottom:5px}.filters button{white-space:nowrap}.active{background:#17324d!important;color:#fff!important}.danger{color:#b3261e}.ok{color:#18794e}.warn{color:#9a6700}.summary{font-size:17px;line-height:1.8}.back{margin-bottom:8px}@media(max-width:480px){.three{grid-template-columns:1fr}.row{grid-template-columns:1fr}.nav{grid-template-columns:1fr 1fr}}
 .loginScreen{position:fixed;inset:0;background:#f3f5f7;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}.loginBox{width:100%;max-width:380px;background:#fff;border-radius:16px;padding:22px;box-shadow:0 3px 18px #cbd2d9}.loginBox h2{text-align:center;color:#17324d;margin:0 0 18px}.userBar{display:flex;justify-content:space-between;align-items:center;background:#e9eef3;padding:8px 12px;border-radius:9px;margin-bottom:10px;font-size:13px}.logoutBtn{border:0;background:#b3261e;color:#fff;border-radius:7px;padding:7px 9px;font-weight:700}
@@ -355,4 +357,12 @@ syncAllToCloud = function(){
 };
 strictSyncAllToCloud = syncAllToCloud;
 })();
-</script></body></html>
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./sw.js');
+  });
+}
+</script>
+</body></html>
