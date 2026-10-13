@@ -6,5 +6,17 @@
   "display": "standalone",
   "background_color": "#f3f5f7",
   "theme_color": "#17324d",
-  "description": "Umut Ambalaj sipariş ve müşteri takip sistemi"
+  "description": "Umut Ambalaj sipariş ve müşteri takip sistemi",
+  "icons": [
+    {
+      "src": "./umut-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./umut-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
