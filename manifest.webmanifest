@@ -1,0 +1,10 @@
+{
+  "name": "Umut Ambalaj",
+  "short_name": "Umut Ambalaj",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f5f7",
+  "theme_color": "#17324d",
+  "description": "Umut Ambalaj sipariş ve müşteri takip sistemi"
+}
