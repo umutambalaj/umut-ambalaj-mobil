@@ -19,6 +19,16 @@
  </div>
 </div>
 
+<div id="recoveryScreen" class="loginScreen" style="display:none">
+ <div class="loginBox">
+  <h2>YENİ ŞİFRE BELİRLE</h2>
+  <label>Yeni şifre</label><input id="newPassword" type="password" autocomplete="new-password">
+  <label>Yeni şifre tekrar</label><input id="newPassword2" type="password" autocomplete="new-password">
+  <button id="saveNewPassword" class="btn primary" style="width:100%">Şifreyi Kaydet</button>
+  <div id="recoveryMsg" class="muted" style="margin-top:12px;text-align:center"></div>
+ </div>
+</div>
+
 <header>UMUT AMBALAJ</header><div style="background:#fff3cd;color:#664d03;padding:9px;text-align:center;font-weight:bold">GÜVENLİ BULUT · DÜZENLEME VE GÜVENLİ SİLME AÇIK</div><div class="wrap"><div id="userBar" class="userBar" style="display:none"><span id="activeUser"></span><button id="logoutBtn" class="logoutBtn">Çıkış</button></div>
 <div id="home" class="page">
  <div class="nav">
@@ -270,6 +280,25 @@ document.addEventListener('click',function(ev){
  if(blocked){ev.preventDefault();ev.stopImmediatePropagation();alert('Bu işlem henüz güvenli sürümde açık değil.');}
 },true);
 E('loginBtn').onclick=login;E('logoutBtn').onclick=logout;E('loginPassword').addEventListener('keydown',function(e){if(e.key==='Enter')login()});
+
+function handlePasswordRecovery(){
+ var hash=new URLSearchParams(location.hash.replace(/^#/,''));
+ var token=hash.get('access_token'),type=hash.get('type');
+ if(type!=='recovery'||!token)return false;
+ E('loginScreen').style.display='none';E('recoveryScreen').style.display='flex';
+ E('saveNewPassword').onclick=function(){
+  var p=E('newPassword').value,p2=E('newPassword2').value;
+  if(p.length<6)return E('recoveryMsg').textContent='Şifre en az 6 karakter olmalı.';
+  if(p!==p2)return E('recoveryMsg').textContent='Şifreler aynı değil.';
+  E('saveNewPassword').disabled=true;E('recoveryMsg').textContent='Kaydediliyor...';
+  fetch(AUTH_URL+'/user',{method:'PUT',headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({password:p})})
+   .then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.msg||d.message||'Şifre değiştirilemedi');return d})})
+   .then(function(){history.replaceState(null,'',location.pathname+location.search);localStorage.removeItem('umutAuthSession');accessToken='';activeEmail='';E('recoveryScreen').style.display='none';showLogin('Şifre değiştirildi. Yeni şifrenle giriş yap.');})
+   .catch(function(e){E('recoveryMsg').textContent='Hata: '+e.message;E('saveNewPassword').disabled=false;});
+ };
+ return true;
+}
+
 function bootSafe(){
  try{
   var d=JSON.parse(localStorage.getItem('umutAuthSession')||'null');
@@ -280,7 +309,7 @@ function bootSafe(){
    .catch(function(){localStorage.removeItem('umutAuthSession');accessToken='';activeEmail='';showLogin('Oturum süresi doldu. Lütfen tekrar giriş yap.');});
  }catch(e){showLogin('Umut veya Turgay hesabıyla giriş yap.');}
 }
-bootSafe();
+if(!handlePasswordRecovery())bootSafe();
 
 (function(){
   var btn=document.createElement('button');
