@@ -39,6 +39,7 @@
   <button onclick="openCurrent()">&#128176; Cari / Tahsilat</button><button onclick="openProfit()">&#128202; Ciro ve K&#226;r</button>
   <button onclick="openRegions()">&#128205; B&#246;lge Bakiyeleri</button>
   <button id="cloudUploadBtn" class="btn green" onclick="uploadLocalToCloud()">&#9729;&#65039; Buluta Aktar</button>
+   <button id="manualBackupBtn" class="btn green" onclick="downloadManualBackup()">&#128190; Yedek Al</button>
  </div>
 </div>
 <div id="customers" class="page"><button class="btn back" onclick="goHome()">&#8592; Ana Sayfa</button><div class="title">M&#252;&#351;teriler</div><div class="card"><label>M&#252;&#351;teri ad&#305;</label><input id="cName"><label>B&#246;lge</label><select id="cRegion"></select><button class="btn primary" onclick="addCustomer()">M&#252;&#351;teri Ekle</button></div><div id="customerList"></div></div>
@@ -83,6 +84,42 @@ function syncAllToCloud(){return Promise.reject(new Error('Salt okunur: yazma ka
 function strictReplaceTable(){return Promise.reject(new Error('Salt okunur: yazma kapalı'));}
 function strictSyncAllToCloud(){return Promise.reject(new Error('Salt okunur: yazma kapalı'));}
 window.uploadLocalToCloud=function(){alert('Bu sürümde buluta yazma kapalıdır.');};
+// MANUEL YEDEK: Supabase tablolarini salt-okunur GET ile sayfalayarak indirir.
+window.downloadManualBackup=async function(){
+ var btn=E('manualBackupBtn');
+ if(!accessToken||!cloudReady){alert('Önce Supabase bağlantısı ve giriş tamamlanmalı.');return;}
+ if(window.__cloudBusy){alert('Önce devam eden kayıt işleminin bitmesini bekle.');return;}
+ if(btn.disabled)return;
+ btn.disabled=true;btn.textContent='Yedek hazırlanıyor...';
+ var tables=['musteriler','urunler','siparisler','tahsilatlar','planli_tahsilatlar','bakiye_duzenlemeleri'];
+ try{
+  var backup={uygulama:'Umut Ambalaj',yedek_tarihi:new Date().toISOString(),surum:1,kaynak:'Supabase',tablolar:{},kayit_sayilari:{}};
+  var total=0;
+  for(var t=0;t<tables.length;t++){
+   var table=tables[t],rows=[],offset=0,pageSize=500;
+   while(true){
+    var url=SUPA_URL+'/'+table+'?select=*&order=id.asc&limit='+pageSize+'&offset='+offset;
+    var response=await fetch(url,{method:'GET',headers:authHeaders(),cache:'no-store'});
+    if(!response.ok)throw new Error(table+' tablosu okunamadı (HTTP '+response.status+').');
+    var page=await response.json();
+    if(!Array.isArray(page))throw new Error(table+' tablosundan geçersiz cevap geldi.');
+    rows=rows.concat(page);
+    if(page.length<pageSize)break;
+    offset+=pageSize;
+    if(offset>1000000)throw new Error('Çok fazla kayıt; yedekleme durduruldu.');
+   }
+   backup.tablolar[table]=rows;backup.kayit_sayilari[table]=rows.length;total+=rows.length;
+  }
+  if(total===0)throw new Error('Hiç kayıt gelmedi. Boş yedek oluşturulmadı.');
+  var blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json;charset=utf-8'});
+  var filename='Umut_Ambalaj_Yedek_'+new Date().toLocaleDateString('sv-SE')+'.json';
+  var link=document.createElement('a'),objectUrl=URL.createObjectURL(blob);
+  link.href=objectUrl;link.download=filename;document.body.appendChild(link);link.click();link.remove();
+  setTimeout(function(){URL.revokeObjectURL(objectUrl)},60000);
+  alert('Yedek dosyası hazırlandı: '+total+' kayıt, 6 tablo. Telefonun İndirilenler klasörünü kontrol et ve dosyayı güvenli bir yerde sakla.');
+ }catch(e){alert('YEDEK ALINAMADI: '+e.message+' Hiçbir Supabase kaydı değiştirilmedi.');}
+ finally{btn.disabled=false;btn.textContent='💾 Yedek Al';}
+};
 function getTable(t){return api('/'+t+'?select=*&order=id.asc')}
 function cloudLoad(){return Promise.all([getTable('musteriler'),getTable('urunler'),getTable('siparisler'),getTable('tahsilatlar'),getTable('planli_tahsilatlar'),getTable('bakiye_duzenlemeleri')]).then(function(d){var count=0,i,x;for(i=0;i<d.length;i++)count+=(d[i]||[]).length;if(!count){cloudReady=false;throw new Error('Bulutta kayıt bulunamadı; güvenlik için ekleme durduruldu.')}musteriler=(d[0]||[]).map(function(x){return{id:x.id,ad:x.ad,bolge:x.bolge||''}});urunKayitlari=(d[1]||[]).map(function(x){return{id:x.id,ad:x.ad,birim:x.birim||'Adet',maliyet:n(x.maliyet),satis:n(x.satis)}});siparisler=(d[2]||[]).map(function(x){return{id:x.id,musteri:x.musteri,tarih:x.tarih,urun:x.urun,not:x.aciklama||'',birim:x.birim||'Adet',adet:n(x.adet),fiyat:n(x.fiyat),maliyet:n(x.maliyet),diger:!!x.aciklama,teslimEdildi:!!x.teslim_edildi,teslimTarihi:x.teslim_tarihi?String(x.teslim_tarihi).slice(0,10):null,teslimGecmisSilindi:!!x.gecmisten_silindi,olusturan:x.olusturan||'',teslimEden:x.teslim_eden||''}});tahsilatlar=(d[3]||[]).map(function(x){return{musteri:x.musteri,tutar:n(x.tutar),tarih:x.tarih}});planliTahsilatlar=(d[4]||[]).map(function(x){return{id:x.id,musteri:x.musteri,tutar:n(x.tutar),tarih:x.tarih,tahsilEdildi:x.durum==='tahsil_edildi'}});bakiyeDuzenlemeleri=(d[5]||[]).map(function(x){return{id:x.id,musteri:x.musteri,delta:n(x.tutar),islem:x.aciklama||'Bakiye \u0130\u015flemi',not:'',tarih:x.tarih}});cloudReady=true}).catch(function(e){console.error('Supabase ba\u011flant\u0131s\u0131 kurulamad\u0131',e);cloudReady=false;throw e})}
 function n(v){var x=parseFloat(v);return isNaN(x)?0:x}
